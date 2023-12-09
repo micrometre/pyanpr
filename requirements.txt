@@ -1,0 +1,6 @@
+flask
+flask-sse 
+gunicorn 
+gevent
+redis
+rq
