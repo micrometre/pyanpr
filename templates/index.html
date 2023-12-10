@@ -1,33 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    {% include 'head-imports.html' %}
+    <meta charset="UTF-8">
+    <title>FlaskApp</title>
 </head>
-
 <body>
-    <header>
-        <nav class="navbar navbar-fixed navbar-inner header" style="padding: 0px 16px">
-            <div class="navbar-brand" style="color: dodgerblue;display: table;">
-                <i class="fa fa-bolt fa-3x" style="color: dodgerblue;"></i>
-                <a href="http://127.0.0.1:5000/" style="display: table-cell; vertical-align: middle; padding-left: 15px;">BOLT</a>
-            </div>
-
-            <ul class="nav pull-right">
-                <li>
-                    <a class="nav-link" href="/upload">Upload</a>
-                </li>
-                <li>
-                    <a class="nav-link" href="/filters">Filters</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <section class="container" id="content">
-        {% include 'gallery.html' %}
-    </section>
-    {% include 'scripts.html' %}
-    <script src="{{url_for('static', filename='scripts/main.js')}}"></script>
+    <h1>Hello World!</h1>
+    <h2>Welcome to FlaskApp!</h2>
+    <script>
+            var source = new EventSource("{{ url_for('sse.stream') }}");
+    source.addEventListener('greeting', function(event) {
+        var data = JSON.parse(event.data);
+        alert("The server says " + data.message);
+    }, false);
+    source.addEventListener('error', function(event) {
+        alert("Failed to connect to event stream. Is Redis running?");
+    }, false);
+      </script>
 </body>
-
 </html>
