@@ -1,12 +1,10 @@
 import os
 from flask import Flask, request,  render_template, send_from_directory, send_file
-from flask import render_template_string 
-import subprocess
-from subprocess import Popen, PIPE
 from subprocess import check_output
 import redis
-from flask_sse import sse
-
+import time  
+from watchdog.observers import Observer  
+from watchdog.events import PatternMatchingEventHandler  
 redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
 def get_shell_script_output_using_communicate():
