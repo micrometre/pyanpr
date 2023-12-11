@@ -8,7 +8,10 @@ import os
 from inotify_simple import INotify, flags
 import inotify.adapters
 
-app = Flask(__name__)
+
+
+app = Flask(__name__, static_folder='static', static_url_path='')
+
 CORS(app)
 r = redis.Redis(
     host='localhost',
@@ -17,11 +20,11 @@ r = redis.Redis(
 
 def get_images():
     i = inotify.adapters.Inotify()
-    i.add_watch('./public/images')
+    i.add_watch('./static/images')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names))
-        return ("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(path, filename, type_names))
+        print("http://localhost:5000/{}\n\n".format(filename))
+        return ("http://localhost:5000/{}\n\n".format(filename))
 
 
 def get_shell_script_output_using_check_output():
