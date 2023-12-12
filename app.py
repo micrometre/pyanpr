@@ -20,7 +20,7 @@ def get_images():
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         print("http://localhost:5000/images/{}\n\n".format(filename))
-        r.publish("bigboxcode", (filename))
+        r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
         return ("http://localhost:5000/images/{}\n\n".format(filename))
 
 
@@ -66,6 +66,6 @@ def index():
 
 @app.route("/video")
 def video():
-    return send_file("./public/upload/alprVideo.mp4")
+    return send_file("./static/upload/alprVideo.mp4")
 if __name__ == "__main__":
      app.run(debug=True)   
