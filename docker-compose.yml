@@ -27,7 +27,6 @@ services:
       - redis
   alpr:
     build: ./openalpr-docker
-    user: root
     volumes:
       - ./static/images:/var/lib/openalpr/plateimages
 volumes:

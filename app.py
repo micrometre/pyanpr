@@ -3,9 +3,11 @@ from flask import Flask, Response, jsonify, json, request, render_template, send
 from flask_cors import CORS
 import redis
 import inotify.adapters
+from os import path, walk
 
 
 app = Flask(__name__, static_folder='static', static_url_path='')
+
 
 CORS(app)
 r = redis.Redis(
@@ -63,9 +65,9 @@ def sse():
 @app.route("/video")
 def video():
     return send_file("./static/upload/alprVideo.mp4")
-if __name__ == "__main__":
-     app.run(debug=True)   
-
 @app.route('/')
 def hello():
     return render_template('index.html')     
+if __name__ == "__main__":
+     app.config['TEMPLATES_AUTO_RELOAD']=True
+     app.run(debug=True, host='0.0.0.0' )

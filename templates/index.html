@@ -9,6 +9,7 @@
 <body>
 
   <div class="container">
+    <h1>ALPRD</h1>
     <div class="row">
       <div class="col-sm">
         <div class="image-container img-responsive">
@@ -20,23 +21,38 @@
       </div>
     </div>
   </div>
-
-
-
   {% include 'scripts.html' %}
 </body>
+<script type="module">
+
+</script>
+<script type="module">
+  import { h, render } from 'https://esm.sh/preact';
+  import htm from 'https://esm.sh/htm';
+
+  // Initialize htm with Preact
+  const html = htm.bind(h);
+
+  function App (props) {
+    return html`<h1>Hello ${props.name}!</h1>`;
+  }
+
+  render(html`<${App} name="World" />`, document.body);
+</script>
 <script>
     const eventSource = new EventSource('http://localhost:5000/alprdsse');
     const listElement = document.getElementById('list');
-  
     eventSource.onmessage = function (currentEvent) {
       if (currentEvent.data.length > 0) {
         const listElement = document.getElementById('list');
         const newElement = document.createElement('li');
         newElement.innerText = currentEvent.data;
-        r = JSON.parse(currentEvent.data)
-        console.log((r));
-  
+        const alprd = JSON.parse(currentEvent.data)
+        const alprdUuid = alprd.uuid
+        const alprdPlate = alprd.results[0].plate
+        const alprdConfidence = alprd.results[0].confidence
+        const processingTimeMs = alprd.results[0].processing_time_ms
+        console.log((alprdPlate + alprdUuid + alprdConfidence + processingTimeMs));
         listElement.appendChild(newElement)
       }
     };
