@@ -16,3 +16,20 @@ alprd_restart:
 alprd_remove:	
 	docker-compose -f openalpr-docker/docker-compose.yml down -v
 	docker-compose -f openalpr-docker/docker-compose.yml down rm -rf
+start:
+	docker-compose up -d 
+
+stop:
+	docker-compose down 
+
+update:
+	docker-compose down 
+	docker-compose pull
+	docker-compose up -d --build
+
+restart:
+	docker-compose restart
+
+remove:
+	docker-compose down -v
+	docker-compose rm -f

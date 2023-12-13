@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Flask-SSE Demo - BigBoxCode</title>
+  {% include 'head-imports.html' %}
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <div class="image-container img-responsive">
+            <ul id="list">
+                <!-- new content appears here -->
+              </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  {% include 'scripts.html' %}
+</body>
+<script>
+    const eventSource = new EventSource('http://localhost:5000/alprdsse');
+    const listElement = document.getElementById('list');
+  
+    eventSource.onmessage = function (currentEvent) {
+      if (currentEvent.data.length > 0) {
+        const listElement = document.getElementById('list');
+        const newElement = document.createElement('li');
+        newElement.innerText = currentEvent.data;
+        r = JSON.parse(currentEvent.data)
+        console.log((r));
+  
+        listElement.appendChild(newElement)
+      }
+    };
+  </script>
+
+</html>

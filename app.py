@@ -15,7 +15,7 @@ r = redis.Redis(
 
 def get_images():
     i = inotify.adapters.Inotify()
-    i.add_watch('./static/images')
+    i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         print("http://localhost:5000/images/{}\n\n".format(filename))
@@ -41,7 +41,7 @@ def alpr_images():
         for message in pubsub.listen():
             try:
                 data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
+                yield " {}\n\n".format(str(data, 'utf-8'))
             except:
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
@@ -65,3 +65,7 @@ def video():
     return send_file("./static/upload/alprVideo.mp4")
 if __name__ == "__main__":
      app.run(debug=True)   
+
+@app.route('/')
+def hello():
+    return render_template('index.html')     
