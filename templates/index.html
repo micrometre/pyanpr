@@ -49,10 +49,6 @@
         const newElement = document.createElement('li');
         newElement.innerText = currentEvent.data;
         const alprd = JSON.parse(currentEvent.data)
-        const alprdUuid = alprd.uuid
-        const alprdPlate = alprd.results[0].plate
-        const alprdConfidence = alprd.results[0].confidence
-        const processingTimeMs = alprd.results[0].processing_time_ms
         listElement.appendChild(newElement)
       }
     };

@@ -21,21 +21,23 @@ def get_images():
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        print("http://localhost:5000/images/{}\n\n".format(filename))
-        r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
-        return ("http://localhost:5000/images/{}\n\n".format(filename))
+       # print("http://localhost:5000/images/{}\n\n".format(filename))
+        #r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
+        alpr_images = {"img": filename}
+        r.publish("bigboxcode", json.dumps((alpr_images)))
+        return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
 
 
 
 @app.route("/images", methods=["GET"])
-def alpr_images():
+def alprd_images():
     def alpr_sse_events():
         pubsub = r.pubsub()
         pubsub.subscribe("bigboxcode")
         for message in pubsub.listen():
             try:
                 data = message["data"]
-                yield " {}\n\n".format(str(data, 'utf-8'))
+                yield "data: {}\n\n".format(str(data, 'utf-8'))
             except:
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
