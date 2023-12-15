@@ -40,15 +40,15 @@
   render(html`<${App} name="World" />`, document.body);
 </script>
 <script>
-    const eventSource = new EventSource('http://localhost:5000/alprdsse');
+    const eventSource = new EventSource('http://localhost:5000/images');
     const listElement = document.getElementById('list');
     eventSource.onmessage = function (currentEvent) {
+        console.log(eventSource);
       if (currentEvent.data.length > 0) {
         const listElement = document.getElementById('list');
         const newElement = document.createElement('li');
         newElement.innerText = currentEvent.data;
         const alprd = JSON.parse(currentEvent.data)
-        console.log((typeof(alprd)));
         const alprdUuid = alprd.uuid
         const alprdPlate = alprd.results[0].plate
         const alprdConfidence = alprd.results[0].confidence
