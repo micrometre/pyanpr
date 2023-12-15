@@ -23,7 +23,7 @@ def get_images():
         (_, type_names, path, filename) = event
        # print("http://localhost:5000/images/{}\n\n".format(filename))
         #r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
-        alpr_images = {"img": filename}
+        alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
 
