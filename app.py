@@ -4,6 +4,7 @@ from flask_cors import CORS
 import redis
 import inotify.adapters
 from os import path, walk
+from flask import jsonify
 
 
 app = Flask(__name__, static_folder='static', static_url_path='')
@@ -25,15 +26,6 @@ def get_images():
         return ("http://localhost:5000/images/{}\n\n".format(filename))
 
 
-@app.route('/alprd', methods=["POST"])
-def publish():
-    get_images()
-    try:
-        data = json.loads(request.data)
-        r.publish("alprd", json.dumps(data))
-        return jsonify(status="success", message="published", data=data)
-    except:
-        return jsonify(status="fail", message="not published")
 
 @app.route("/images", methods=["GET"])
 def alpr_images():
@@ -48,6 +40,15 @@ def alpr_images():
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
 
+@app.route('/alprd', methods=["POST"])
+def publish():
+    get_images()
+    try:
+        data = json.loads(request.data)
+        r.publish("alprd", json.dumps(data))
+        return jsonify(status="success", message="published", data=data)
+    except:
+        return jsonify(status="fail", message="not published")
         
 @app.route('/alprdsse', methods=["GET"])
 def sse():
@@ -58,6 +59,7 @@ def sse():
             try:
                 data = message["data"]
                 yield "data: {}\n\n".format(str(data, 'utf-8'))
+                #yield "data: {}\n\n".format(str(data, 'utf-8'))
             except:
                 pass
     return Response(sse_events(), mimetype="text/event-stream")
