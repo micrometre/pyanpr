@@ -19,12 +19,15 @@ export default function Alprd() {
   }, []);
   return (
     <>
-<h1>
-  {stateUuid}
-  {state[4]}
-  {state[1]}
-  {state[7]}
-</h1>
+      <h1 className="text-3xl font-bold underline">
+        {stateUuid}
+    <br/>
+        {state[4]}
+    <br/>
+        {state[1]}
+    <br/>
+        {state[7]}
+      </h1>
     </>
   );
 }
