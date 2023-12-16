@@ -5,6 +5,8 @@ import redis
 import inotify.adapters
 from os import path, walk
 from flask import jsonify
+import cv2
+
 
 
 app = Flask(__name__, static_folder='static', static_url_path='')
@@ -16,12 +18,13 @@ r = redis.Redis(
     port=6379,
 )
 
+
 def get_images():
     i = inotify.adapters.Inotify()
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-       # print("http://localhost:5000/images/{}\n\n".format(filename))
+        #print("http://localhost:5000/images/{}\n\n".format(filename))
         #r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
         alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
         r.publish("bigboxcode", json.dumps((alpr_images)))
@@ -45,6 +48,14 @@ def alprd_images():
 @app.route('/alprd', methods=["POST"])
 def publish():
     get_images()
+    vidcap = cv2.VideoCapture('./static/upload/alprVideo.mp4')
+    success,image = vidcap.read()
+    count = 0
+    while success:
+      cv2.imwrite("./alpr-images/frame%d.jpg" % count, image)     # save frame as JPEG file      
+      success,image = vidcap.read()
+      print('Read a new frame: ', success)
+      count += 1
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
@@ -73,4 +84,5 @@ def video():
 def hello():
     return render_template('index.html')     
 if __name__ == "__main__":
+     app.config['TEMPLATES_AUTO_RELOAD']=True
      app.run(debug=True, host='0.0.0.0' )
