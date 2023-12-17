@@ -3,9 +3,10 @@ from flask import Flask, Response, jsonify, json, request, render_template, send
 from flask_cors import CORS
 import redis
 import inotify.adapters
-from os import path, walk
+import os 
 from flask import jsonify
 import cv2
+from subprocess import check_output
 
 
 
@@ -19,70 +20,25 @@ r = redis.Redis(
 )
 
 
-def get_images():
-    i = inotify.adapters.Inotify()
-    i.add_watch('./static/images/')
-    for event in i.event_gen(yield_nones=False):
-        (_, type_names, path, filename) = event
-        #print("http://localhost:5000/images/{}\n\n".format(filename))
-        #r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
-        alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
-        r.publish("bigboxcode", json.dumps((alpr_images)))
-        return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
+def start_alpr():
+    result = os.popen('./scripts/monit.sh').read()
+    print(type(result))
+    return result
 
-
-
-@app.route("/images", methods=["GET"])
-def alprd_images():
-    def alpr_sse_events():
-        pubsub = r.pubsub()
-        pubsub.subscribe("bigboxcode")
-        for message in pubsub.listen():
-            try:
-                data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
-            except:
-                pass
-    return Response(alpr_sse_events(), mimetype="text/event-stream")  
+def get_shell_output():
+    stdout = check_output(['./scripts/monit.sh']).decode('utf-8')
+    print(type((stdout )))
+    return stdout
 
 @app.route('/alprd', methods=["POST"])
-def publish():
-    get_images()
-    vidcap = cv2.VideoCapture('./static/upload/alprVideo.mp4')
-    success,image = vidcap.read()
-    count = 0
-    while success:
-      cv2.imwrite("./alpr-images/frame%d.jpg" % count, image)     # save frame as JPEG file      
-      success,image = vidcap.read()
-      print('Read a new frame: ', success)
-      count += 1
-    try:
-        data = json.loads(request.data)
-        r.publish("alprd", json.dumps(data))
-        return jsonify(status="success", message="published", data=data)
-    except:
-        return jsonify(status="fail", message="not published")
-        
-@app.route('/alprdsse', methods=["GET"])
-def sse():
-    def sse_events():
-        pubsub = r.pubsub()
-        pubsub.subscribe("alprd")
-        for message in pubsub.listen():
-            try:
-                data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
-                #yield "data: {}\n\n".format(str(data, 'utf-8'))
-            except:
-                pass
-    return Response(sse_events(), mimetype="text/event-stream")
+def hello_world():
+    start_alpr()
+    get_shell_output()
+    return "<p>Hello, World!</p>"
 
 @app.route("/video")
 def video():
     return send_file("./static/upload/alprVideo.mp4")
-@app.route('/')
-def hello():
-    return render_template('index.html')     
 if __name__ == "__main__":
      app.config['TEMPLATES_AUTO_RELOAD']=True
      app.run(debug=True, host='0.0.0.0' )

@@ -40,7 +40,7 @@
   render(html`<${App} name="World" />`, document.body);
 </script>
 <script>
-    const eventSource = new EventSource('http://localhost:5000/images');
+    const eventSource = new EventSource('http://localhost:5000/alprdsse');
     const listElement = document.getElementById('list');
     eventSource.onmessage = function (currentEvent) {
         console.log(eventSource);
