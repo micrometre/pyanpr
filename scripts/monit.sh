@@ -1,6 +1,6 @@
 #!/bin/bash
-
- alpr -c gb  -n 1 tmp/ 
+ls -la
+alpr -c gb  -n 1 tmp/ 
  #| sed 's|tmp| {"img", "http://|g;/: 1 result/d; s/confidence://g; s/-/","plate","/g;s/[0-9]/"}/8 '
  #alpr -c gb  -n 1 tmp/ | sed 's|tmp| {"img", "http://|g;/: 1 result/d; s/confidence://g; s/-/","plate","/g;s/[0-9]/"}/8 '
 #alpr -c gb  -n 1 tmp/ | sed 's|tmp| img: http://localhost|g;/: 1 result/d; s/confidence://g; s/-/,plate:/g  '
