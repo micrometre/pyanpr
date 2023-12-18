@@ -1,15 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title>Flask-SSE Demo - BigBoxCode</title>
+  {% include 'head-imports.html' %}
 </head>
+
 <body>
-    <div class="imgs">
-        {% for image in images %}
-            <img class="imgs" src="{{ url_for('send_image', filename=image) }}" />
-        {% endfor %}
+
+  <div class="container">
+    <h1>ALPRD</h1>
+    <div class="row">
+      <div class="col-sm">
+        <div class="image-container img-responsive">
+            <ul id="list">
+                <!-- new content appears here -->
+              </ul>
+
+        </div>
+      </div>
     </div>
+  </div>
+  {% include 'scripts.html' %}
 </body>
+<script type="module">
+
+</script>
+<script type="module">
+  import { h, render } from 'https://esm.sh/preact';
+  import htm from 'https://esm.sh/htm';
+
+  // Initialize htm with Preact
+  const html = htm.bind(h);
+
+  function App (props) {
+    return html`<h1>Hello ${props.name}!</h1>`;
+  }
+
+  render(html`<${App} name="World" />`, document.body);
+</script>
+<script>
+    const eventSource = new EventSource('http://localhost:5000/alprdsse');
+    const listElement = document.getElementById('list');
+    eventSource.onmessage = function (currentEvent) {
+        console.log(eventSource);
+      if (currentEvent.data.length > 0) {
+        const listElement = document.getElementById('list');
+        const newElement = document.createElement('li');
+        newElement.innerText = currentEvent.data;
+        const alprd = JSON.parse(currentEvent.data)
+        listElement.appendChild(newElement)
+      }
+    };
+  </script>
+
 </html>
