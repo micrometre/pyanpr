@@ -16,10 +16,12 @@ export default function AlprdImages() {
   }, []);
   return (
     <>
-<h1 className="text-3xl font-bold underline">
-  {stateImage.img}
-</h1>
-<img src={stateImage.img} alt="Alprd Imges"   />;
+      <h1 className="text-3xl font-bold underline">
+        {stateImage.img}
+      </h1>
+      <img src={stateImage.img} alt="alprd"/>
+
+
     </>
   );
 }

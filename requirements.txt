@@ -4,3 +4,4 @@ redis
 inotify
 opencv-python
 openalpr
+flask-cors
