@@ -1,5 +1,8 @@
 #!/bin/bash
-alpr -c gb  -n 1 tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"/;s/-/":"/g;s/$/"}/g; ' | jq
+alpr -c gb  -n 1 static/tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"img":"/;s/-/","plate":"/g;s/$/"}/g;'  | jq
+
+#alpr -c gb  -n 1 static/tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"img":"/;s/-/","plate":"/g;s/$/"}/g; s/tmp//g ' | jq
+#alpr -c gb  -n 1 tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"/;s/-/":"/g;s/$/"}/g; ' | jq
 #alpr -c gb  -n 1 tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed "s/^/{\'/; s/-/':'/g; s/$/'}/g"
 
 #alpr -c gb  -n 1 tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"/;s/-/":"/g;s/$/"}/g; ' 

@@ -10,7 +10,7 @@ from openalpr import Alpr
 import json
 import ast
 
-app = Flask(__name__, static_folder='static', static_url_path='',)
+app = Flask(__name__, static_folder='static', static_url_path='')
 
 
 def get_images():
@@ -18,7 +18,7 @@ def get_images():
     i.add_watch('./static/images/')
     result_stdout = os.popen('./scripts/monit.sh').read()
     d = ast.literal_eval(result_stdout)
-    print((result_stdout))
+    print(type(d))
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         #print("http://localhost:5000/images/{}\n\n".format(filename))
