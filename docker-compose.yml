@@ -29,6 +29,17 @@ services:
     build: ./openalpr-docker
     volumes:
       - ./flask-api/static/images:/var/lib/openalpr/plateimages
+    networks:
+      - redis-network
+  flask-api:
+    build: ./flask-api
+    ports:
+      - 5000:5000
+    networks:
+      - redis-network
+networks:
+  redis-network:
+    driver: bridge      
 volumes:
   redis:
   redis-config:

@@ -25,3 +25,4 @@ EXPOSE 5000
 
 
 CMD python3 --version
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--debug" ]
