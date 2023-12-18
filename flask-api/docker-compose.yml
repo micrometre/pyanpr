@@ -1,0 +1,13 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  flask-api:
+    build: .
+    ports:
+      - 5000:5000
+    networks:
+      - flask-network
+networks:
+  flask-network:
+    driver: bridge

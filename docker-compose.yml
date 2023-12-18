@@ -28,7 +28,7 @@ services:
   alpr:
     build: ./openalpr-docker
     volumes:
-      - ./static/images:/var/lib/openalpr/plateimages
+      - ./flask-api/static/images:/var/lib/openalpr/plateimages
 volumes:
   redis:
   redis-config:
