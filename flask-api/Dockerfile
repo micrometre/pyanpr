@@ -20,7 +20,16 @@ lsof
 WORKDIR /code
 COPY .  /code
 RUN pip install -r requirements.txt
+RUN curl --silent --location https://raw.githubusercontent.com/micrometreuk/anpr/master/scripts/openalpr-buster.sh | bash -
+VOLUME /etc/openalpr/
+RUN mkdir -p   /var/lib/openalpr/plateimages
+VOLUME /var/lib/openalpr/plateimages
+RUN chown 1000:1000 /var/lib/openalpr/plateimages
 
+
+RUN mkdir -p   /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./config-files/alprd.conf /etc/openalpr/alprd.conf
 EXPOSE 5000
 
 
