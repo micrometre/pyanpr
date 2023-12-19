@@ -25,14 +25,6 @@ services:
       - redis-network
     depends_on:
       - redis
-  flask-api:
-    build: ./flask-api
-    volumes:
-      - ./static/images:/var/lib/openalpr/plateimages
-    ports:
-      - 5000:5000
-    networks:
-      - redis-network
 networks:
   redis-network:
     driver: bridge      

@@ -1,6 +1,7 @@
 .PHONY: run
 claen_alprd: 
 	sudo rm -rf flask-api/static/images/*.jpg
+	sudo rm -rf static/images/*.jpg
 flask_start:
 	flask run --host=0.0.0.0 --debug	
 start:

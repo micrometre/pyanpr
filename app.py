@@ -2,10 +2,7 @@ from flask import Flask, Response, jsonify, json, request, render_template, send
 from flask_cors import CORS
 import redis
 import inotify.adapters
-from os import path, walk
 from flask import jsonify
-
-
 app = Flask(__name__, static_folder='static', static_url_path='')
 
 
@@ -14,6 +11,7 @@ r = redis.Redis(
     host='localhost',
     port=6379,
 )
+
 
 def get_images():
     i = inotify.adapters.Inotify()

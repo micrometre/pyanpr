@@ -15,7 +15,7 @@ r = redis.Redis(
 )
 def get_images():
     i = inotify.adapters.Inotify()
-    i.add_watch('./static/images/')
+    i.add_watch('/var/lib/openalpr/plateimages')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         print("http://localhost:5000/images/{}\n\n".format(filename))
