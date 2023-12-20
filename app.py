@@ -11,7 +11,8 @@ CORS(app)
 alprdb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="395F844E696D423F6B7ACBBA301539668E6"
+  password="395F844E696D423F6B7ACBBA301539668E6",
+  database="alprdata"
 )
 
 
@@ -23,9 +24,15 @@ r = redis.Redis(
 
 def sql_create_db():
     alprcursor = alprdb.cursor()
-    alprcursor.execute("CREATE DATABASE alprdatabase")
+    alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
+    alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates2 (plate TEXT, img TEXT );")
+    sql = "INSERT INTO plates2 (plate, img) VALUES (%s, %s)"
+    val = ("John", "Highway 21")
+    alprcursor.execute(sql,val)
+    alprdb.commit()
+    print(alprcursor.rowcount, "record inserted.")
 
-
+ 
 def start_alpr():
     result_stdout = os.popen('./scripts/monit.sh').read()
     r.publish("alprd", json.dumps(result_stdout))
