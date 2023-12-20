@@ -1,4 +1,6 @@
 #!/bin/bash
+
+alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/{"img" : "/g; s/confidence:/"}/g' | awk '{print $1 $2 $3 }' | tr -d '\n' | jq
 alpr -c gb  -n 1 static/tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"img":"/;s/-/","plate":"/g;s/$/"}/g; s|static/tmp//|http://localhost:5000/images/|g'  | jq
 
 #alpr -c gb  -n 1 static/tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"img":"/;s/-/","plate":"/g;s/$/"}/g; s/staic/tt/g'  | jq

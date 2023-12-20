@@ -3,6 +3,7 @@ from flask_cors import CORS
 import redis
 import inotify.adapters
 from flask import jsonify
+import os   
 app = Flask(__name__, static_folder='static', static_url_path='')
 
 
@@ -11,6 +12,12 @@ r = redis.Redis(
     host='localhost',
     port=6379,
 )
+def start_alpr():
+    result_stdout = os.popen('./scripts/monit.sh').read()
+    r.publish("alprd", json.dumps(result_stdout))
+    #result_set = set(result_stdout)
+    print((result_stdout))
+
 
 
 def get_images():
@@ -39,6 +46,7 @@ def alprd_images():
 @app.route('/alprd', methods=["POST"])
 def publish():
     get_images()
+    start_alpr()
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
