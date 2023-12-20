@@ -4,18 +4,32 @@ import redis
 import inotify.adapters
 from flask import jsonify
 import os   
+import mysql.connector
+
 app = Flask(__name__, static_folder='static', static_url_path='')
-
-
 CORS(app)
+alprdb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="395F844E696D423F6B7ACBBA301539668E6"
+)
+
+
+
 r = redis.Redis(
     host='localhost',
     port=6379,
 )
+
+def sql_create_db():
+    alprcursor = alprdb.cursor()
+    alprcursor.execute("CREATE DATABASE alprdatabase")
+
+
 def start_alpr():
     result_stdout = os.popen('./scripts/monit.sh').read()
     r.publish("alprd", json.dumps(result_stdout))
-    #result_set = set(result_stdout)
+    j = json.dumps(result_stdout)
     print((result_stdout))
 
 
@@ -45,8 +59,8 @@ def alprd_images():
 
 @app.route('/alprd', methods=["POST"])
 def publish():
-    get_images()
     start_alpr()
+    sql_create_db()
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
