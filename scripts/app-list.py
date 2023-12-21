@@ -23,19 +23,12 @@ r = redis.Redis(
 )
 
 def sql_create_db():
-    result_stdout = os.popen('./scripts/monit.sh').read()
-    r.publish("alprd", json.dumps(result_stdout))
-    s = result_stdout.split()
-    y = s.pop(2)
-    w = s.pop(0)
-    print(y, w)
     alprcursor = alprdb.cursor()
     alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
     alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates2 (plate TEXT, img TEXT );")
     sql = "INSERT INTO plates2 (plate, img) VALUES (%s, %s)"
     val = ("John", "Highway 21")
-    val2 = y, w
-    alprcursor.execute(sql,val2)
+    alprcursor.execute(sql,val)
     alprdb.commit()
     print(alprcursor.rowcount, "record inserted.")
 
@@ -73,6 +66,7 @@ def alprd_images():
 
 @app.route('/alprd', methods=["POST"])
 def publish():
+    start_alpr()
     sql_create_db()
     try:
         data = json.loads(request.data)
