@@ -39,6 +39,7 @@ def start_alpr():
     s = result_stdout.split()
     #print((len(s)))
     print((s[0]))
+    print((s[5]))
 
 def get_images():
     i = inotify.adapters.Inotify()
