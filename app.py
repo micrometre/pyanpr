@@ -37,7 +37,7 @@ def start_alpr():
     result_stdout = os.popen('./scripts/monit.sh').read()
     r.publish("alprd", json.dumps(result_stdout))
     j = json.dumps(result_stdout)
-    print((result_stdout))
+    print((result_stdout.split()))
 
 
 

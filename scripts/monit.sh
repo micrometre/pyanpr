@@ -1,5 +1,13 @@
 #!/bin/bash
-alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/{"img" : "/g; s/confidence:/"}/g' | awk '{print $1 $2 $3 }' | tr -d '\n' | jq
+alpr -c gb  -n 1 static/tmp/ | awk '{print$2 $1 $3}' | sed '/1plate0/d;  s/-conf.*/"/; s/static/"/g;'
+# alpr -c gb  -n 1 static/tmp/ | awk '{print$2 $1 $3}' | sed '/1plate0/d; s/\jpg\b/& ", /; s/-conf.*//; s/static/"/g; s/$/"/ '   
+
+#alpr -c gb  -n 1 static/tmp/ | sed 's/\jpg\b/& , reg /;s/conf.*//;/^$/d; /plate/d; s|static/tmp//|"img - |g; s/$/"/'
+#alpr -c gb  -n 1 static/tmp/ | sed 's/\jpg\b/& , reg /;s/conf.*//;/^$/d; /plate/d; s|static/tmp//|"img - |g; '
+#alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/'\''{"img" : "/g; s/confidence:/"}'\''/g' | awk '{print $1 $2 $3 }' | tr -d '\n'
+#alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/'\''{"img" : "/g; s/confidence:/"}'\''/g' | awk '{print $1 $2 $3 }'
+#alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/{"img" : "/g; s/confidence:/"}/g' | awk '{print $1 $2 $3 }' | tr -d '\n' 
+#alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/{"img" : "/g; s/confidence:/"}/g' | awk '{print $1 $2 $3 }' | tr -d '\n' | jq
 #alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/{"img" : "/g; s/confidence:/"}/g' | awk '{print $1 $2 $3 }' | tr -d '\n' 
 #alpr -c gb  -n 1 static/tmp/ | grep 'tmp\|-' | tr -d '\n' | awk {'print $1" "$2" "$3'}  | sed 's/^/{"img":"/;s/-/","plate":"/g;s/$/"}/g; s|static/tmp//|http://localhost:5000/images/|g'  | jq
 

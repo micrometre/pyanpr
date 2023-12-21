@@ -25,6 +25,11 @@ services:
       - redis-network
     depends_on:
       - redis
+  alpr:
+    build: ./openalpr-docker
+    user: root
+    volumes:
+      - ../static/images:/var/lib/openalpr/plateimages      
 networks:
   redis-network:
     driver: bridge      
