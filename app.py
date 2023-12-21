@@ -37,9 +37,9 @@ def start_alpr():
     result_stdout = os.popen('./scripts/monit.sh').read()
     r.publish("alprd", json.dumps(result_stdout))
     s = result_stdout.split()
-    #print((len(s)))
-    print((s[0]))
-    print((s[5]))
+    y = s.pop(2)
+    w = s.pop(0)
+    print(y, w)
 
 def get_images():
     i = inotify.adapters.Inotify()
