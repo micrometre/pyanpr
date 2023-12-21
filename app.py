@@ -36,8 +36,11 @@ def sql_create_db():
 def start_alpr():
     result_stdout = os.popen('./scripts/monit.sh').read()
     r.publish("alprd", json.dumps(result_stdout))
-    j = json.dumps(result_stdout)
-    print((result_stdout.split()))
+    s = result_stdout.split()
+    t = [('img', '.jpg' )]
+    d=dict(t)
+    print((type(d)))
+    print(((d)))
 
 
 

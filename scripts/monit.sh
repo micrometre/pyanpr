@@ -1,5 +1,8 @@
 #!/bin/bash
 alpr -c gb  -n 1 static/tmp/ | awk '{print$2 $1 $3}' | sed '/1plate0/d;  s/-conf.*/"/; s/static/"/g;'
+
+#dict
+#alpr -c gb  -n 1 static/tmp/ | awk '{print$2 $1 $3}' | sed '/1plate0/d;  s/-conf.*/)"]/; s/static/[("img","/g;/1plate0/d;
 # alpr -c gb  -n 1 static/tmp/ | awk '{print$2 $1 $3}' | sed '/1plate0/d; s/\jpg\b/& ", /; s/-conf.*//; s/static/"/g; s/$/"/ '   
 
 #alpr -c gb  -n 1 static/tmp/ | sed 's/\jpg\b/& , reg /;s/conf.*//;/^$/d; /plate/d; s|static/tmp//|"img - |g; s/$/"/'
