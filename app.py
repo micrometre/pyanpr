@@ -5,7 +5,9 @@ import inotify.adapters
 from flask import jsonify
 import os   
 import mysql.connector
-
+import time
+from time import time
+from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
 app = Flask(__name__, static_folder='static', static_url_path='')
 CORS(app)
 
@@ -15,18 +17,22 @@ r = redis.Redis(
     host='localhost',
     port=6379,
 )
-
-
-data2 = ("static/tmp//frame0.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.5398", "static/tmp//frame1.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.5398", "static/tmp//frame10.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.012", "static/tmp//frame2.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.5398", "static/tmp//frame3.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.084", "static/tmp//frame4.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "86.6608", "static/tmp//frame5.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "86.811", "static/tmp//frame6.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "85.9441", "static/tmp//frame7.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "84.573", "static/tmp//frame8.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "84.5297", "static/tmp//frame9.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "86.1544")
+redis_host = "redis"
+stream_key = "skey"
+stream2_key = "s2key"
+group1 = "grp1"
+group2 = "grp2"
 
 
  
 def alpr_from_img():
     result_stdout = os.popen('./scripts/monit.sh').read()
     s = result_stdout.split()
-    r.set('key', 'value')
-    r.set('foo', 'bar')
+    r.publish("bigboxcode", json.dumps((s)))
     print((s))
+    for i in range(0,10):
+        r.xadd( stream_key, { 'ts': time(), 'v': i } )
+    print( f"stream length: {r.xlen( stream_key )}")
 
 def get_images():
     i = inotify.adapters.Inotify()
