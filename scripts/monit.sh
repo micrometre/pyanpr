@@ -1,5 +1,8 @@
 #!/bin/bash
-alpr -c gb  -n 1 static/tmp/ |  grep 'static\|conf'
+# for i in static/tmp/*.jpg;  do  alpr -c gb   -n 1 $i done
+alpr -c gb   -n 1 static/tmp/ 
+#|  grep 'static\|conf' | awk '{print$2 $1}'
+#alpr -c gb  -n 1 static/tmp/ |  grep 'static\|conf' | awk '{print$2 $1}'
 #sed '/plate0/d;'
 #alpr -c gb  -n 1 static/tmp/ | awk '{print$2 $1 $3}' | sed '/1plate0/d;  s/-conf.*/")]/; s/static/[("img","/g;/1plate0/d; s/\jpg\b/& "),("plate"," /;  '   |  tr -d '\n'
 

@@ -8,6 +8,12 @@ import mysql.connector
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 CORS(app)
+alprdb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="395F844E696D423F6B7ACBBA301539668E6",
+  database="alprdata"
+)
 
 
 
@@ -16,17 +22,23 @@ r = redis.Redis(
     port=6379,
 )
 
-
-data2 = ("static/tmp//frame0.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.5398", "static/tmp//frame1.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.5398", "static/tmp//frame10.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.012", "static/tmp//frame2.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.5398", "static/tmp//frame3.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "87.084", "static/tmp//frame4.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "86.6608", "static/tmp//frame5.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "86.811", "static/tmp//frame6.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "85.9441", "static/tmp//frame7.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "84.573", "static/tmp//frame8.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "84.5297", "static/tmp//frame9.jpg", "plate0:", "1", "results", "-", "GL19TNJ", "confidence:", "86.1544")
-
+def sql_create_db():
+    alprcursor = alprdb.cursor()
+    alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
+    alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates2 (plate TEXT, img TEXT );")
+    sql = "INSERT INTO plates2 (plate, img) VALUES (%s, %s)"
+    val = ("John", "Highway 21")
+    alprcursor.execute(sql,val)
+    alprdb.commit()
+    print(alprcursor.rowcount, "record inserted.")
 
  
-def alpr_from_img():
+def start_alpr():
     result_stdout = os.popen('./scripts/monit.sh').read()
     s = result_stdout.split()
-    r.set('key', 'value')
-    r.set('foo', 'bar')
-    print((s))
+    y = s.pop(2)
+    w = s.pop(0)
+    print(y, w)
 
 def get_images():
     i = inotify.adapters.Inotify()
@@ -53,8 +65,9 @@ def alprd_images():
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
 
 @app.route('/alprd', methods=["POST"])
-def alpr_from_video():
-    alpr_from_img()
+def publish():
+    sql_create_db()
+    get_images()
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
