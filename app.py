@@ -42,7 +42,6 @@ def sql_create_db():
  
 def start_alpr():
     result_stdout = os.popen('./scripts/monit.sh').read()
-    r.publish("alprd", json.dumps(result_stdout))
     s = result_stdout.split()
     y = s.pop(2)
     w = s.pop(0)
@@ -58,6 +57,7 @@ def get_images():
         alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
+
 @app.route("/images", methods=["GET"])
 def alprd_images():
     def alpr_sse_events():
@@ -74,6 +74,7 @@ def alprd_images():
 @app.route('/alprd', methods=["POST"])
 def publish():
     sql_create_db()
+    get_images()
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))

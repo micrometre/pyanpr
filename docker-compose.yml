@@ -4,6 +4,7 @@ version: '3.8'
 services:
   redis:
     image: redis:latest
+    container_name: redis
     command: redis-server
     volumes:
       - redis:/var/lib/redis
@@ -15,6 +16,7 @@ services:
 
   redis-commander:
     image: rediscommander/redis-commander:latest
+    container_name: redis-commander
     environment:
       - REDIS_HOSTS=local:redis:6379
       - HTTP_USER=root
@@ -25,6 +27,28 @@ services:
       - redis-network
     depends_on:
       - redis
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ./docker-mysql/data:/docker-entrypoint-initdb.d # where to find our data 
+      - ./docker-mysql/conf.d:/etc/mysql/conf.d          
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 395F844E696D423F6B7ACBBA301539668E6
+      MYSQL_DATABASE: alprdata
+      MYSQL_USER: alpruser
+      MYSQL_PASSWORD: =[-p0o9i8U
+    ports:
+    - 3306:3306
+    expose:
+      - 3306
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080       
   alpr:
     build: ./openalpr-docker
     user: root
