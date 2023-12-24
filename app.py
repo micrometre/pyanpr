@@ -32,9 +32,13 @@ def alpr_from_img():
     l3=stdout_list[1::2]
     z=zip(l2,l3)
     stdout_dictionary_sorted = (dict(z))
-    
-    print((stdout_dictionary_sorted.keys()))
-    print((stdout_dictionary_sorted.items()))
+    stdout_dictionary_json  = json.dumps(stdout_dictionary_sorted)
+    foo = ["res","ttt"]
+    bar = ["ser","ooo"]
+    for f, b in zip(l2, l3):
+        print(f, b)
+        r.xadd( stream_key, { f: b} )
+        #print( f"stream length: {r.xlen( stream_key )}")
 def get_images():
     i = inotify.adapters.Inotify()
     i.add_watch('./static/images/')
