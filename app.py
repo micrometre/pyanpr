@@ -28,11 +28,11 @@ group2 = "grp2"
 def alpr_from_img():
     result_stdout = os.popen('./scripts/monit.sh').read()
     stdout_list = result_stdout.split()
+    stdout_set = set(stdout_list)
     stdout_dictionary = dict.fromkeys(stdout_list)
-    stdout_dictionary_values = stdout_dictionary.keys()
-    stdout_dictionary_json = json.dumps(stdout_dictionary)
-    stdout_dictionary_json_loads = json.loads(stdout_dictionary_json)
-    print((stdout_dictionary))
+    stdout_tuple = tuple(stdout_list)
+    print((stdout_tuple))
+    print((result_stdout))
     r.publish("bigboxcode", json.dumps((stdout_list)))
     for i in stdout_list:
         r.xadd( stream2_key, { i : i } )
