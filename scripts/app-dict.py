@@ -32,7 +32,6 @@ def alpr_from_img():
     l3=stdout_list[1::2]
     z=zip(l2,l3)
     stdout_dictionary_sorted = (dict(z))
-    
     print((stdout_dictionary_sorted.keys()))
     print((stdout_dictionary_sorted.items()))
 def get_images():
