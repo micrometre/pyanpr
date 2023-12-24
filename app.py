@@ -4,10 +4,10 @@ import redis
 import inotify.adapters
 from flask import jsonify
 import os   
-import mysql.connector
 import time
 from time import time
 from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
+import cv2
 app = Flask(__name__, static_folder='static', static_url_path='')
 CORS(app)
 
@@ -19,7 +19,7 @@ r = redis.Redis(
 )
 redis_host = "redis"
 stream_key = "skey"
-stream2_key = "s2key"
+stream2_key = "alpr"
 group1 = "grp1"
 group2 = "grp2"
 
@@ -27,12 +27,26 @@ group2 = "grp2"
  
 def alpr_from_img():
     result_stdout = os.popen('./scripts/monit.sh').read()
-    s = result_stdout.split()
-    r.publish("bigboxcode", json.dumps((s)))
-    print((s))
-    for i in range(0,10):
-        r.xadd( stream_key, { 'ts': time(), 'v': i } )
-    print( f"stream length: {r.xlen( stream_key )}")
+    stdout_list = result_stdout.split()
+    stdout_dictionary = dict.fromkeys(stdout_list)
+    stdout_dictionary_values = stdout_dictionary.keys()
+    stdout_dictionary_json = json.dumps(stdout_dictionary)
+    stdout_dictionary_json_loads = json.loads(stdout_dictionary_json)
+    print((stdout_dictionary))
+    r.publish("bigboxcode", json.dumps((stdout_list)))
+    for i in stdout_list:
+        r.xadd( stream2_key, { i : i } )
+    print( f"stream length: {r.xlen( stream2_key )}", )
+
+def get_images_cv2():
+    vidcap = cv2.VideoCapture('./static/upload/alprVideo.mp4')
+    success,image = vidcap.read()
+    count = 0
+    while success:
+      cv2.imwrite("./static/tmp/frame%d.jpg" % count, image)     # save frame as JPEG file      
+      success,image = vidcap.read()
+      print('Read a new frame: ', success)
+      count += 1
 
 def get_images():
     i = inotify.adapters.Inotify()
@@ -45,6 +59,15 @@ def get_images():
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
 
+@app.route('/alprd', methods=["POST"])
+def alpr_from_video():
+    alpr_from_img()
+    try:
+        data = json.loads(request.data)
+        r.publish("alprd", json.dumps(data))
+        return jsonify(status="success", message="published", data=data)
+    except:
+        return jsonify(status="fail", message="not published")
 @app.route("/images", methods=["GET"])
 def alprd_images():
     def alpr_sse_events():
@@ -58,15 +81,6 @@ def alprd_images():
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
 
-@app.route('/alprd', methods=["POST"])
-def alpr_from_video():
-    alpr_from_img()
-    try:
-        data = json.loads(request.data)
-        r.publish("alprd", json.dumps(data))
-        return jsonify(status="success", message="published", data=data)
-    except:
-        return jsonify(status="fail", message="not published")
 
 @app.route('/alprdsse', methods=["GET"])
 def sse():

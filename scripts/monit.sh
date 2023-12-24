@@ -1,6 +1,15 @@
 #!/bin/bash
 # for i in static/tmp/*.jpg;  do  alpr -c gb   -n 1 $i done
-alpr -c gb   -n 1 static/tmp/ 
+alpr -c gb  -n 1 static/tmp/ |  grep 'static\|conf' | awk '{print$1 $2}' | sed 's/-/plate-/g'
+#alpr -c gb  -n 1 static/tmp/ |  grep 'static\|conf' | awk '{print$1 $2}' | sed 's/-/:/g'
+
+#alpr -c gb  -n 1 static/tmp/ |  grep 'static\|conf' | awk '{print$2 $1}'
+
+#alpr -c gb  -n 1 static/tmp/ | sed 's/-/],[plate:/g; /plate0: 1 results/d; s/static/[img : /g; s/confidence:/]/g' | awk '{print $1 $2 $3 }' | tr -d 'n\'
+#alpr -c gb  -n 1 static/tmp/ | sed 's/-/","plate":"/g; /plate0: 1 results/d; s/static/"img" : "/g; s/confidence:/"/g' | awk '{print $1 $2 $3 }'
+
+#alpr -c gb   -n 1 static/tmp/ 
+
 #|  grep 'static\|conf' | awk '{print$2 $1}'
 #alpr -c gb  -n 1 static/tmp/ |  grep 'static\|conf' | awk '{print$2 $1}'
 #sed '/plate0/d;'
