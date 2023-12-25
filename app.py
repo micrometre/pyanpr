@@ -6,12 +6,12 @@ import redis
 import inotify.adapters
 from flask import jsonify
 import os   
-import time
 from time import time
 from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
 import cv2
+
 UPLOAD_FOLDER = './static/upload'
-ALLOWED_EXTENSIONS = {'mp4', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 app = Flask(__name__, static_folder='static', static_url_path='')
@@ -25,9 +25,12 @@ redis_host = "redis"
 stream_key = "alpr"
 
 
+               
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def alpr_from_img():
     result_stdout = os.popen('./scripts/monit.sh').read()
     stdout_list = result_stdout.split()
@@ -36,6 +39,7 @@ def alpr_from_img():
     for f, b in zip(l2, l3):
         print(result_stdout)
         r.xadd( stream_key, { f: b} )
+
 def get_images_alprd():
     i = inotify.adapters.Inotify()
     i.add_watch('./static/images/')
@@ -46,9 +50,9 @@ def get_images_alprd():
         alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
+
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
-    alpr_from_img()
     get_images_alprd()
     try:
         data = json.loads(request.data)
@@ -112,3 +116,8 @@ def upload_file():
 @app.route("/video")
 def video():
     return send_file("./static/upload/alprVideo.mp4")
+
+
+@app.route("/test") 
+def test():
+    return("test")    

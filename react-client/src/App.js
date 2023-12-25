@@ -9,10 +9,9 @@ export default function App() {
         <div className="w-full flex-none md:w-64">
           <SideNav />
         </div>
-        <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
-      <Alprd />
-      <AlprdImages />
-        
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-2">
+          <Alprd />
+          <AlprdImages />
         </div>
       </div>
     </>

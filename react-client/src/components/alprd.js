@@ -10,24 +10,27 @@ export default function Alprd() {
       const alprdDataResultArray = alprdData.results[0];
       const alprdDataResultArrayMap = Object.keys(alprdDataResultArray).map((key) => [key, alprdDataResultArray[key]]);
       setUud(alprdDataUuid)
-      console.log(alprdDataUuid)
       setState(alprdDataResultArrayMap);
     };
     evtSource.onopen = (event) => {
-      console.log(event);
     };
   }, []);
   return (
     <>
-      <h1 className="text-3xl font-bold underline">
+      <div className="thumbnail">
+        <div className="frame">
+          <h2 className="font-semibold">
         {stateUuid}
-    <br/>
+        <br />
         {state[4]}
-    <br/>
+        <br />
         {state[1]}
-    <br/>
+        <br />
         {state[7]}
-      </h1>
+          </h2>
+        </div>
+      </div>
+
     </>
   );
 }
