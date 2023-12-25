@@ -17,20 +17,19 @@ export default function Alprd() {
   }, []);
   return (
     <>
-      <div className="thumbnail">
-        <div className="frame">
+      <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
+        <div className="flex p-4">
           <h2 className="font-semibold">
-        {stateUuid}
-        <br />
-        {state[4]}
-        <br />
-        {state[1]}
-        <br />
-        {state[7]}
+            {stateUuid}
+            <br />
+            {state[4]}
+            <br />
+            {state[1]}
+            <br />
+            {state[7]}
           </h2>
         </div>
       </div>
-
     </>
   );
 }
