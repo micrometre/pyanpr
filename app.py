@@ -91,19 +91,17 @@ def alprd_images():
 
 @app.route("/data", methods=["GET"])
 def alprd_db():
-    def alpr_sse_events():
+    def alpr_sse():
         pubsub = r.pubsub()
         pubsub.subscribe("alprdata")
         for message in pubsub.listen():
+            print((message))
             try:
                 data = message["data"]
-                h = json.loads(data)
-                for x in h:
-                    print(x)
                 yield "data: {}\n\n".format(str(data, 'utf-8'))
             except:
                 pass
-    return Response(alpr_sse_events(), mimetype="text/event-stream")  
+    return Response(alpr_sse(), mimetype="text/event-stream")  
 
 
 
