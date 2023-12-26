@@ -17,8 +17,6 @@ export default function Alprd() {
   }, []);
   return (
     <>
-      <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
-        <div className="flex p-4">
           <h2 className="font-semibold">
             {stateUuid}
             <br />
@@ -28,8 +26,6 @@ export default function Alprd() {
             <br />
             {state[7]}
           </h2>
-        </div>
-      </div>
     </>
   );
 }

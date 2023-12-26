@@ -37,7 +37,6 @@ def alpr_from_img():
     l2=stdout_list[::2]
     l3=stdout_list[1::2]
     for f, b in zip(l2, l3):
-        print(result_stdout)
         r.xadd( stream_key, { f: b} )
 
 def get_images_alprd():
@@ -45,9 +44,10 @@ def get_images_alprd():
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        print("http://localhost:5000/images/{}\n\n".format(filename))
+        #print("http://localhost:5000/images/{}\n\n".format(filename))
         #r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
         alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
+        r.publish("alprdata", json.dumps((alpr_images)))
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
 
@@ -56,6 +56,7 @@ def alpr_from_video():
     get_images_alprd()
     try:
         data = json.loads(request.data)
+        r.publish("alprdata", json.dumps(data))
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
@@ -83,6 +84,22 @@ def alprd_images():
         for message in pubsub.listen():
             try:
                 data = message["data"]
+                yield "data: {}\n\n".format(str(data, 'utf-8'))
+            except:
+                pass
+    return Response(alpr_sse_events(), mimetype="text/event-stream")  
+
+@app.route("/data", methods=["GET"])
+def alprd_db():
+    def alpr_sse_events():
+        pubsub = r.pubsub()
+        pubsub.subscribe("alprdata")
+        for message in pubsub.listen():
+            try:
+                data = message["data"]
+                h = json.loads(data)
+                for x in h:
+                    print(x)
                 yield "data: {}\n\n".format(str(data, 'utf-8'))
             except:
                 pass
