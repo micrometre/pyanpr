@@ -95,12 +95,8 @@ def alprd_db():
         pubsub = r.pubsub()
         pubsub.subscribe("alprdata")
         for message in pubsub.listen():
-            print((message))
-            try:
-                data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
-            except:
-                pass
+           data2 = message["data"]
+           print((data2))
     return Response(alpr_sse(), mimetype="text/event-stream")  
 
 
