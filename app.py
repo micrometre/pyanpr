@@ -9,6 +9,9 @@ import os
 from time import time
 from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
 import cv2
+import pandas
+
+
 
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
@@ -96,7 +99,8 @@ def alprd_db():
         pubsub.subscribe("alprdata")
         for message in pubsub.listen():
            data2 = message["data"]
-           print((data2))
+           alpr_images =  "{}\n".format(data2)
+           print((alpr_images))
     return Response(alpr_sse(), mimetype="text/event-stream")  
 
 
