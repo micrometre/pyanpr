@@ -99,8 +99,10 @@ def alprd_db():
         pubsub.subscribe("alprdata")
         for message in pubsub.listen():
            data2 = message["data"]
+           data_dict = message.copy()
+           data_dict2 = dict(message)
            alpr_images =  "{}\n".format(data2)
-           print((alpr_images))
+           print((data_dict2))
     return Response(alpr_sse(), mimetype="text/event-stream")  
 
 
