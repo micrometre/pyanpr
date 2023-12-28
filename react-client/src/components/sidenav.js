@@ -40,7 +40,7 @@ export default function SideNav() {
         <input
           className="bg-transparent p-2 w-full focus:outline-none"
           type="text"
-          placeholder="Search foods"
+          placeholder="Search "
         />
       </div>
       {nav ? (

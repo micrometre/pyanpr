@@ -9,9 +9,11 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 export default function App() {
   return (
     <>
-      <SideNav />
-      <Alprd />
-      <AlprdImages />
+        <SideNav />
+      <main className="flex  flex-col items-center justify-between">
+        <Alprd />
+        <AlprdImages />
+      </main>
     </>
   )
 }

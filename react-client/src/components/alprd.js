@@ -18,6 +18,8 @@ export default function Alprd() {
   return (
     <>
           <h2 className="font-semibold">
+            {state[0]}
+            <br />
             {stateUuid}
             <br />
             {state[4]}

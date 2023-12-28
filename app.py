@@ -76,7 +76,7 @@ def alpr_from_video():
     alprdb.commit()
     print(type(val2))
     print(alpr_img_plate)
-
+    get_images_alprd()
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
