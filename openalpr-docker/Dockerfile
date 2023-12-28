@@ -21,4 +21,4 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY alprd.conf /etc/openalpr/alprd.conf
 CMD ["/usr/bin/supervisord"]
 WORKDIR ~/
-EXPOSE 11300 3000
+EXPOSE 11300 11300

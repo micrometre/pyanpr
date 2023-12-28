@@ -32,6 +32,8 @@ services:
     user: root
     volumes:
       - ./static/images:/var/lib/openalpr/plateimages      
+    ports:
+      - 11300:11300
 networks:
   redis-network:
     driver: bridge      

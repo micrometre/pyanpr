@@ -8,9 +8,8 @@ from flask import jsonify
 import os   
 from time import time
 from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
-import cv2
-import pandas
-
+import mysql.connector
+import json
 
 
 UPLOAD_FOLDER = './static/upload'
@@ -20,13 +19,19 @@ ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
+alprdb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="395F844E696D423F6B7ACBBA301539668E6",
+  database="alprdata"
+)
+
 r = redis.Redis(
     host='localhost',
     port=6379,
 )
 redis_host = "redis"
 stream_key = "alpr"
-
 
                
 
@@ -41,25 +46,39 @@ def alpr_from_img():
     l3=stdout_list[1::2]
     for f, b in zip(l2, l3):
         r.xadd( stream_key, { f: b} )
-
+alprd_images_sql = {}
 def get_images_alprd():
     i = inotify.adapters.Inotify()
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        #print("http://localhost:5000/images/{}\n\n".format(filename))
-        #r.publish("bigboxcode","http://localhost:5000/images/{}\n".format (filename))
         alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
-        r.publish("alprdata", json.dumps((alpr_images)))
+        alprd_images_sql = alprd_images
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
 
+
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
-    get_images_alprd()
+    request_data = request.get_json()
+    alpr_results = request_data["results"]
+    alpr_uuid = request_data["uuid"]
+    alpr_plate = alpr_results[0]["plate"]
+    alpr_img = get_images_alprd()
+    alpr_img_plate = alpr_img[1]
+    alprcursor = alprdb.cursor()
+    alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
+    alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (uuid TEXT, plate TEXT, img TEXT );")
+    sql = "INSERT INTO plates (uuid, plate, img) VALUES (%s, %s, %s)"
+    val2 = (alpr_uuid, alpr_plate, alpr_img_plate)
+    val = ("John", "Highway 21")
+    alprcursor.execute(sql,val2)
+    alprdb.commit()
+    print(type(val2))
+    print(alpr_img_plate)
+
     try:
         data = json.loads(request.data)
-        r.publish("alprdata", json.dumps(data))
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
@@ -74,7 +93,6 @@ def sse():
             try:
                 data = message["data"]
                 yield "data: {}\n\n".format(str(data, 'utf-8'))
-                #yield "data: {}\n\n".format(str(data, 'utf-8'))
             except:
                 pass
     return Response(sse_events(), mimetype="text/event-stream")
@@ -91,21 +109,6 @@ def alprd_images():
             except:
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
-
-@app.route("/data", methods=["GET"])
-def alprd_db():
-    def alpr_sse():
-        pubsub = r.pubsub()
-        pubsub.subscribe("alprdata")
-        for message in pubsub.listen():
-           data2 = message["data"]
-           data_dict = message.copy()
-           data_dict2 = dict(message)
-           alpr_images =  "{}\n".format(data2)
-           print((data_dict2))
-    return Response(alpr_sse(), mimetype="text/event-stream")  
-
-
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -134,7 +137,11 @@ def upload_file():
 def video():
     return send_file("./static/upload/alprVideo.mp4")
 
+@app.route("/") 
+def home():
+    return render_template('index.html')      
+
 
 @app.route("/test") 
 def test():
-    return("test")    
+    return("test")     
