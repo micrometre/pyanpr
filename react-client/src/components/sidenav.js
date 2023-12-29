@@ -9,7 +9,7 @@ export default function SideNav() {
   return (
     <>
       <div className="max-w-[1640px] mx-auto flex justify-between items-center p-4 shadow-sm">
-        <div className="bg-blue-500 fixed top-0 left-0 w-[300px] h-screen bg-white z-10 duration-300">
+        <div className="fixed top-0 left-0 w-[300px] h-screen bg-white z-10 duration-300">
           <h2 className="text-2l p-4">
             <FileUpload />
           </h2>

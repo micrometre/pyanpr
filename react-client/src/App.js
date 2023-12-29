@@ -10,12 +10,19 @@ export default function App() {
   return (
     <>
       <SideNav />
-        <main className={`flex min-h-screen flex-col items-center justify-between`}>
-          <h2 className={`text-2xl font-semibold`}>
+      <main className={`flex min-h-screen flex-col items-center justify-between`}>
+        <div className="grid grid-cols-2 gap-1">
+          <div>01
             <Alprd />
+          </div>
+          <div>
             <AlprdImages />
-          </h2>
-    </main>
+          </div>
+          <div>
+          </div>
+        </div>
+            <AlprDb />
+      </main>
     </>
   )
 }
