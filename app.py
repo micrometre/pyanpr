@@ -70,11 +70,10 @@ def alpr_from_video():
     alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
     alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (uuid TEXT, plate TEXT, img TEXT );")
     sql = "INSERT INTO plates (uuid, plate, img) VALUES (%s, %s, %s)"
-    val2 = (alpr_uuid, alpr_plate, alpr_img_plate)
-    val = ("John", "Highway 21")
-    alprcursor.execute(sql,val2)
+    val = (alpr_uuid, alpr_plate, alpr_img_plate)
+    alprcursor.execute(sql,val)
     alprdb.commit()
-    print(type(val2))
+    print(type(val))
     print(alpr_img_plate)
     get_images_alprd()
     try:
