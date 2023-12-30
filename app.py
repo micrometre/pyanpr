@@ -4,24 +4,20 @@ from flask import Flask, Response, jsonify, json, request, render_template, send
 from flask_cors import CORS
 import redis
 import inotify.adapters
-from flask import jsonify
 import os   
 from time import time
 from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
 import mysql.connector
 import json
 import logging
-
+import pandas as pd
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
-logging.warning('Watch out!')  # will print a message to the console
-logging.info('I told you so') 
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-#CORS(app)
-CORS(app, origins='http://localhost:3000')
+CORS(app)
 
 
 alprdb = mysql.connector.connect(
@@ -128,13 +124,6 @@ def upload_file():
     </form>
     '''
 
-@app.route('/data', methods=['GET'])
-def alpr_data():
-    alprcursor = alprdb.cursor()
-    alprcursor.execute("SELECT * FROM plates WHERE LENGTH(plate) = 7")
-    alprresult = alprcursor.fetchall()
-    data = json.dumps(alprresult)
-    return ((data))
 
 
 @app.route("/video")

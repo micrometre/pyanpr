@@ -12,16 +12,15 @@ export default function App() {
       <SideNav />
       <main className={`flex min-h-screen flex-col items-center justify-between`}>
         <div className="grid grid-cols-2 gap-1">
-          <div>01
-            <Alprd />
+          <div>
           </div>
           <div>
             <AlprdImages />
+            <Alprd />
           </div>
           <div>
           </div>
         </div>
-            <AlprDb />
       </main>
     </>
   )
