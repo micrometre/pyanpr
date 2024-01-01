@@ -58,6 +58,22 @@ services:
     expose:
       - 3306
 
+  camera-db:
+    image: mysql:5.7
+    container_name: camera-db
+    volumes:
+      - ./docker-mysql/data:/docker-entrypoint-initdb.d # where to find our data 
+      - ./docker-mysql/conf.d:/etc/mysql/conf.d          
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 395F844E696D423F6B7ACBBA301539668E6
+      MYSQL_DATABASE: cameradata
+      MYSQL_USER: alpruser
+      MYSQL_PASSWORD: =[-p0o9i8U
+    ports:
+    - 3307:3306
+    expose:
+      - 3306
   adminer:
     image: adminer
     restart: always
