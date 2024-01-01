@@ -29,13 +29,15 @@ services:
       - redis
   alpr:
     build: ./openalpr-docker
+    container_name: alprd-main
     user: root
     volumes:
       - ./static/images:/var/lib/openalpr/plateimages      
     ports:
       - 11300:11300
-  alpr_images:
-    build: ./openalpr-docker
+  alpr-camera:
+    build: ./openalpr-docker -camera
+    container_name: alprd-camera
     user: root
     volumes:
       - ./static/camera-images:/var/lib/openalpr/plateimages      

@@ -45,12 +45,19 @@ def get_images_alprd():
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        #alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
         alpr_images = {"img": "http://172.187.216.226:5000/images/{}\n".format(filename)}
-        alprd_images_sql = alprd_images
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
 
+
+def get_images_camera():
+    i = inotify.adapters.Inotify()
+    i.add_watch('./static/camera-images/')
+    for event in i.event_gen(yield_nones=False):
+        (_, type_names, path, filename) = event
+        alpr_images = {"img": "http://172.187.216.226:5000/camera-images/{}\n".format(filename)}
+        r.publish("cameraimg", json.dumps((alpr_images)))
+        return ("alprd-camera-img", json.dumps("http://localhost:5000/camera-images/{}\n".format(filename)))
 
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
@@ -68,12 +75,14 @@ def alpr_from_video():
     alprcursor.execute(sql,val)
     alprdb.commit()
     get_images_alprd()
+    get_images_camera()
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
         return jsonify(status="fail", message="not published")
+
 
 @app.route('/alprdsse', methods=["GET"])
 def sse():
@@ -100,6 +109,45 @@ def alprd_images():
             except:
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
+@app.route('/camera', methods=["POST"])
+def alpr_camera():
+    request_data = request.get_json()
+    alpr_results = request_data["results"]
+    alpr_uuid = request_data["uuid"]
+    alpr_plate = alpr_results[0]["plate"]
+    alpr_img = get_images_camera()
+    print(alpr_img)
+    try:
+        data = json.loads(request.data)
+        r.publish("camera", json.dumps(data))
+        return jsonify(status="success", message="published", data=data)
+    except:
+        return jsonify(status="fail", message="not published")
+
+@app.route('/camerasse', methods=["GET"])
+def camera_sse():
+    def sse_events_camera():
+        pubsub = r.pubsub()
+        pubsub.subscribe("camera")
+        for message in pubsub.listen():
+            try:
+                data = message["data"]
+                yield "data: {}\n\n".format(str(data, 'utf-8'))
+            except:
+                pass
+    return Response(sse_events_camera(), mimetype="text/event-stream")
+@app.route("/cameraimg", methods=["GET"])
+def alprd_camera_images():
+    def alpr_camera_sse_events():
+        pubsub = r.pubsub()
+        pubsub.subscribe("cameraimg")
+        for message in pubsub.listen():
+            try:
+                data = message["data"]
+                yield "data: {}\n\n".format(str(data, 'utf-8'))
+            except:
+                pass
+    return Response(alpr_camera_sse_events(), mimetype="text/event-stream")  
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
