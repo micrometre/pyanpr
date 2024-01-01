@@ -45,7 +45,8 @@ def get_images_alprd():
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
+        #alpr_images = {"img": "http://localhost:5000/images/{}\n".format(filename)}
+        alpr_images = {"img": "http://172.187.216.226:5000/images/{}\n".format(filename)}
         alprd_images_sql = alprd_images
         r.publish("bigboxcode", json.dumps((alpr_images)))
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))

@@ -11,7 +11,7 @@ const testImg = "https://img.google.com/vi/some-random-id/maxresdefault.jpg";
 export default function AlprdImages({ src, alt, fallBackSrc = fallback.src }) {
   const [stateImage, setImage] = React.useState([]);
   React.useEffect(() => {
-    const evtSource = new EventSource("http://localhost:5000/images");
+    const evtSource = new EventSource("http://172.187.216.226:5000/images");
     evtSource.onmessage = (event) => {
       const alprdImageData = JSON.parse(event.data)
       setImage(alprdImageData)

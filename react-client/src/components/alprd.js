@@ -3,7 +3,7 @@ export default function Alprd() {
   const [state, setState] = React.useState([]);
   const [stateUuid, setUud] = React.useState([]);
   React.useEffect(() => {
-    const evtSource = new EventSource("http://localhost:5000/alprdsse");
+    const evtSource = new EventSource("http://172.187.216.226:5000/alprdsse");
     evtSource.onmessage = (event) => {
       const alprdData = JSON.parse(event.data)
       const alprdDataUuid = alprdData.uuid;
