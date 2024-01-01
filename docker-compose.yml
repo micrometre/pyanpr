@@ -34,6 +34,11 @@ services:
       - ./static/images:/var/lib/openalpr/plateimages      
     ports:
       - 11300:11300
+  alpr_images:
+    build: ./openalpr-docker
+    user: root
+    volumes:
+      - ./static/camera-images:/var/lib/openalpr/plateimages      
   db:
     image: mysql:5.7
     container_name: db
