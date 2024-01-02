@@ -111,8 +111,9 @@ def upload_file():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = secure_filename('alprVideo.mp4')
+            filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            print(type(file))
             return redirect(url_for('upload_file', name=filename))
     return '''
     <!doctype html>
