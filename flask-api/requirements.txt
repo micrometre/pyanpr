@@ -1,7 +1,0 @@
-flask
-flask_cors 
-redis
-inotify
-opencv-python
-openalpr
-flask-cors

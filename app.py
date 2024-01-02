@@ -28,20 +28,11 @@ alprdb = mysql.connector.connect(
   database="alprdata"
 )
 
-alprdbcamera = mysql.connector.connect(
-  host="localhost",
-  port= 3307,
-  user="root",
-  password="395F844E696D423F6B7ACBBA301539668E6",
-  database="cameradata"
-)
 
 r = redis.Redis(
     host='localhost',
     port=6379,
 )
-redis_host = "redis"
-stream_key = "alpr"
 
                
 
@@ -59,15 +50,6 @@ def get_images_alprd():
         return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
 
 
-def get_images_camera():
-    i = inotify.adapters.Inotify()
-    i.add_watch('./static/camera-images/')
-    for event in i.event_gen(yield_nones=False):
-        (_, type_names, path, filename) = event
-        alpr_images = {"img": "http://172.187.216.226:5000/camera-images/{}\n".format(filename)}
-        r.publish("cameraimg", json.dumps((alpr_images)))
-        return ("cameraimg", json.dumps("http://localhost:5000/camera-images/{}\n".format(filename)))
-
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
     request_data = request.get_json()
@@ -84,35 +66,13 @@ def alpr_from_video():
     alprcursor.execute(sql,val)
     alprdb.commit()
     print(alpr_img_plate)
+    get_images_alprd
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
         return jsonify(status="fail", message="not published")
-@app.route('/camera', methods=["POST"])
-def alpr_camera():
-    request_data = request.get_json()
-    camera_results = request_data["results"]
-    camera_uuid = request_data["uuid"]
-    camera_plate = camera_results[0]["plate"]
-    camera_img = get_images_camera()
-    camera_img_plate = camera_img[1]
-    cameracursor = alprdbcamera.cursor()
-    cameracursor.execute("CREATE DATABASE IF NOT EXISTS cameradata;")
-    cameracursor.execute("CREATE TABLE  IF NOT EXISTS  camera (uuid TEXT, plate TEXT, img TEXT );")    
-    sql = "INSERT INTO camera (uuid, plate, img) VALUES (%s, %s, %s)"
-    val = (camera_uuid, camera_plate, camera_img_plate)
-    cameracursor.execute(sql,val)
-    alprdbcamera.commit()
-    print(cameracursor)
-    try:
-        data = json.loads(request.data)
-        r.publish("camera", json.dumps(data))
-        return jsonify(status="success", message="published", data=data)
-    except:
-        return jsonify(status="fail", message="not published")
-
 
 @app.route('/alprdsse', methods=["GET"])
 def sse():
@@ -139,31 +99,6 @@ def alprd_images():
             except:
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")  
-
-@app.route('/camerasse', methods=["GET"])
-def camera_sse():
-    def sse_events_camera():
-        pubsub = r.pubsub()
-        pubsub.subscribe("camera")
-        for message in pubsub.listen():
-            try:
-                data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
-            except:
-                pass
-    return Response(sse_events_camera(), mimetype="text/event-stream")
-@app.route("/cameraimg", methods=["GET"])
-def alprd_camera_images():
-    def alpr_camera_sse_events():
-        pubsub = r.pubsub()
-        pubsub.subscribe("cameraimg")
-        for message in pubsub.listen():
-            try:
-                data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
-            except:
-                pass
-    return Response(alpr_camera_sse_events(), mimetype="text/event-stream")  
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():

@@ -1,9 +1,8 @@
 import React from "react";
 import AlprdImages from "./components/alprd-images";
 import Alprd from "./components/alprd";
-import SideNav from "./components/sidenav";
 import AlprVideo from "./components/alprd-video";
-import AlprDb from "./components/alpr-db";
+import CameraImages from "./components/camera-images";
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { VideoCameraIcon } from '@heroicons/react/24/outline';
 
