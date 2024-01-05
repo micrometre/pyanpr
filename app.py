@@ -6,17 +6,11 @@ import redis
 import inotify.adapters
 import os   
 from time import time
-from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
-from redis.commands.json.path import Path
-import redis.commands.search.aggregation as aggregations
-import redis.commands.search.reducers as reducers
-from redis.commands.search.field import TextField, NumericField, TagField
-from redis.commands.search.indexDefinition import IndexDefinition, IndexType
-from redis.commands.search.query import NumericFilter, Query
 import mysql.connector
 import json
 import logging
 import pandas as pd
+import datetime
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
@@ -119,9 +113,12 @@ def upload_file():
         print((file.filename))
         print((stdout_list[0]))
         print((stdout_list[1]))
-        r.hset("result:1","plate",  file.filename)
-        r.hset("result:1","img",  stdout_list[1])
-        r.hset("result:1","img_url",  stdout_list[0])
+        current_time = datetime.datetime.now()
+        time_stamp = current_time.timestamp()
+        print( time_stamp)
+        r.hset(time_stamp,"plate",  file.filename)
+        r.hset(time_stamp,"img",  stdout_list[1])
+        r.hset(time_stamp,"img_url",  stdout_list[0])
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
