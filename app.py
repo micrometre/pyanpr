@@ -7,6 +7,12 @@ import inotify.adapters
 import os   
 from time import time
 from redis.exceptions import ConnectionError, DataError, NoScriptError, RedisError, ResponseError
+from redis.commands.json.path import Path
+import redis.commands.search.aggregation as aggregations
+import redis.commands.search.reducers as reducers
+from redis.commands.search.field import TextField, NumericField, TagField
+from redis.commands.search.indexDefinition import IndexDefinition, IndexType
+from redis.commands.search.query import NumericFilter, Query
 import mysql.connector
 import json
 import logging
@@ -36,19 +42,6 @@ r = redis.Redis(
 redis_host = "redis"
 stream_key = "alpr"
 
-
-               
-
-
-def get_alpr_uploads():
-    result_stdout = os.popen('./scripts/monit.sh').read()
-    stdout_list = result_stdout.split()
-    print((result_stdout))
-    print(stdout_list)
-    return(stdout_list)
-
-
-               
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -116,20 +109,23 @@ def alprd_images():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
-    get_alpr_uploads()
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
-        file2 = request.headers
-        print(type(file2))
-        #print (request.__dict__)
+        result_stdout = os.popen('./scripts/monit.sh').read()
+        stdout_list = result_stdout.split()
+        print((file.filename))
+        print((stdout_list[0]))
+        print((stdout_list[1]))
+        r.hset("result:1","plate",  file.filename)
+        r.hset("result:1","img",  stdout_list[1])
+        r.hset("result:1","img_url",  stdout_list[0])
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            #filename = secure_filename('alprVideo.mp4')
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('upload_file', name=filename))
