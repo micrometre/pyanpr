@@ -14,12 +14,9 @@ import datetime
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
-
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
-
-
 alprdb = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -27,15 +24,10 @@ alprdb = mysql.connector.connect(
   port= 3306,
   database="alprdata"
 )
-
-
 r = redis.Redis(
     host='localhost',
     port=6379,
 )
-redis_host = "redis"
-stream_key = "alpr"
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -48,7 +40,7 @@ def get_images_alprd():
         (_, type_names, path, filename) = event
         alpr_images = {"img": "http://172.187.216.226:5000/images/{}\n".format(filename)}
         r.publish("bigboxcode", json.dumps((alpr_images)))
-        return ("alprd", json.dumps("http://localhost:5000/images/{}\n".format(filename)))
+        return ("alprd", json.dumps("http://172.187.216.226:5000/images/{}\n".format(filename)))
 
 
 @app.route('/alprd', methods=["POST"])
@@ -113,12 +105,13 @@ def upload_file():
         print((file.filename))
         print((stdout_list[0]))
         print((stdout_list[1]))
-        current_time = datetime.datetime.now()
-        time_stamp = current_time.timestamp()
-        print( time_stamp)
-        r.hset(time_stamp,"plate",  file.filename)
-        r.hset(time_stamp,"img",  stdout_list[1])
-        r.hset(time_stamp,"img_url",  stdout_list[0])
+        upcursor = alprdb.cursor()
+        upcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
+        upcursor.execute("CREATE TABLE  IF NOT EXISTS  upload (img TEXT, imgurl TEXT, plate TEXT );")
+        sql = "INSERT INTO upload(img, imgurl, plate) VALUES (%s, %s, %s)"
+        val = (file.filename, stdout_list[0], stdout_list[1])
+        upcursor.execute(sql,val)
+        alprdb.commit()
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
@@ -135,8 +128,19 @@ def upload_file():
       <input type=submit value=Upload>
     </form>
     '''
+       #rescursor = alprdb.cursor(dictionary=True)
+       #rescursor.execute("SELECT * FROM upload")
+       #for row in rescursor:
+       #    return(rescursor)
 
 
+@app.route("/uploaddb")
+def alprd_up_images():
+    rescursor = alprdb.cursor(dictionary=True)
+    rescursor.execute("SELECT * FROM upload")
+    v = rescursor.fetchall()
+    print(type(v))
+    return jsonify(v)
 
 @app.route("/video")
 def video():
