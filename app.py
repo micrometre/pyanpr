@@ -33,6 +33,20 @@ r = redis.Redis(
     host='localhost',
     port=6379,
 )
+redis_host = "redis"
+stream_key = "alpr"
+
+
+               
+
+
+def get_alpr_uploads():
+    result_stdout = os.popen('./scripts/monit.sh').read()
+    stdout_list = result_stdout.split()
+    print((result_stdout))
+    print(stdout_list)
+    return(stdout_list)
+
 
                
 
@@ -102,18 +116,22 @@ def alprd_images():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
+    get_alpr_uploads()
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
+        file2 = request.headers
+        print(type(file2))
+        #print (request.__dict__)
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
+            #filename = secure_filename('alprVideo.mp4')
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print(type(file))
             return redirect(url_for('upload_file', name=filename))
     return '''
     <!doctype html>
