@@ -1,0 +1,1 @@
+{0: {'plate': '1LM9KT0', 'confidence': 82.315674, 'matches_template': 0, 'plate_index': 0, 'region': 'gb', 'region_confidence': 0, 'processing_time_ms': 15.470444, 'requested_topn': 1, 'coordinates': [{'x': 334, 'y': 146}, {'x': 454, 'y': 145}, {'x': 455, 'y': 176}, {'x': 335, 'y': 177}], 'candidates': [{'plate': '1LM9KT0', 'confidence': 82.315674, 'matches_template': 0}]}}
