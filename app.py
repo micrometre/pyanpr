@@ -11,7 +11,6 @@ import os
 from time import time
 import mysql.connector
 from mysql.connector import errorcode
-import testsql
 import json
 import logging
 import pandas as pd
@@ -75,12 +74,13 @@ def upload_file():
             result_zip = dict(zip(range(len(result)),result))
             result_zip_plate = result_zip[0]["plate"]
             result_zip_confidence = result_zip[0]["confidence"]
-            result_img = ("http://localhost:5000/uplaod/{}\n\n".format(filename))
+            result_img = ("http://172.187.216.226/:5000/uplaod/{}\n\n".format(filename))
             alprcursor = alprdb.cursor()
             alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
             alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (plate TEXT, img TEXT, confidence TEXT);")
             sql = "INSERT INTO plates (plate, img, confidence) VALUES (%s, %s, %s)"
             val = result_zip_plate, result_img, result_zip_confidence
+            r.publish("bigboxcode", json.dumps((val)))
             alprcursor.execute(sql,val)
             alprdb.commit()
             return redirect(url_for('upload_file', name=filename))
@@ -98,15 +98,8 @@ def alpr_result():
         "img": upresult_img,
         "confidence": upresult_confidence,
         }
-
-
     print(alpr_images)
     return(json.dumps(alpr_images))
-
-
-
-
-
 
 @app.route("/video")
 def video():

@@ -12,11 +12,11 @@ export default function App() {
   return (
     <>
       <main className={`flex flex-col items-center justify-between`}>
-            <UploadDb/>
             <br/>
             <Alprd />
             <AlprdImages />
             <FileUpload />
+            <UploadDb/>
       </main>
     </>
   )
