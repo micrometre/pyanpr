@@ -25,7 +25,6 @@ ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = "hello"
 
 CORS(app)
 
@@ -35,10 +34,16 @@ r = redis.Redis(
     host='localhost',
     port=6379,
 )
-stream_key = "skey"
-stream_key = "alpr"
-group1 = "grp1"
-group2 = "grp2"
+alprdb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="395F844E696D423F6B7ACBBA301539668E6",
+  database="alprdata"
+)
+
+
+
+
 
 
 def allowed_file(filename):
@@ -70,12 +75,20 @@ def upload_file():
             result_zip = dict(zip(range(len(result)),result))
             result_zip_plate = result_zip[0]["plate"]
             result_zip_confidence = result_zip[0]["confidence"]
-            print((result_zip_plate, result_zip_confidence, filename))
+            alprcursor = alprdb.cursor()
+            alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
+            alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (plate TEXT, img TEXT, confidence TEXT);")
+            sql = "INSERT INTO plates (plate, img, confidence) VALUES (%s, %s, %s)"
+            val = ("John", "Highway 21", "USA")
+            val1 = result_zip_plate, filename, result_zip_confidence
+            alprcursor.execute(sql,val1)
+            alprdb.commit()
+            print(alprcursor.rowcount, "record inserted.")
             return redirect(url_for('upload_file', name=filename))
     return Response(alpr_result())
 
 def alpr_result():
-    return("2222")
+   return("222")
 
 
 
