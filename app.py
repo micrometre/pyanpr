@@ -75,20 +75,35 @@ def upload_file():
             result_zip = dict(zip(range(len(result)),result))
             result_zip_plate = result_zip[0]["plate"]
             result_zip_confidence = result_zip[0]["confidence"]
+            result_img = ("http://localhost:5000/uplaod/{}\n\n".format(filename))
             alprcursor = alprdb.cursor()
             alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
             alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (plate TEXT, img TEXT, confidence TEXT);")
             sql = "INSERT INTO plates (plate, img, confidence) VALUES (%s, %s, %s)"
-            val = ("John", "Highway 21", "USA")
-            val1 = result_zip_plate, filename, result_zip_confidence
-            alprcursor.execute(sql,val1)
+            val = result_zip_plate, result_img, result_zip_confidence
+            alprcursor.execute(sql,val)
             alprdb.commit()
-            print(alprcursor.rowcount, "record inserted.")
             return redirect(url_for('upload_file', name=filename))
     return Response(alpr_result())
-
 def alpr_result():
-   return("222")
+    upcursor = alprdb.cursor()
+    upcursor.execute("SELECT * FROM plates")
+    upresult = upcursor.fetchall()
+    upresult_tuple = upresult[0]
+    upresult_plate = upresult_tuple[0]
+    upresult_img = upresult_tuple[1]
+    upresult_confidence = upresult_tuple[2]
+    alpr_images = {
+        "plate": upresult_plate,
+        "img": upresult_img,
+        "confidence": upresult_confidence,
+        }
+
+
+    print(alpr_images)
+    return(json.dumps(alpr_images))
+
+
 
 
 
