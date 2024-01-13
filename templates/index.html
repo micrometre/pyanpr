@@ -1,47 +1,53 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>Flask-SSE Demo - BigBoxCode</title>
-      {% include 'head-imports.html' %}
-    </head>
-    
-<body>
 
-   <h2>Upload File</h2>
-   <form action="/upload" method="POST" enctype="multipart/form-data">
+<head>
+  <title>Flask-SSE Demo - BigBoxCode</title>
+  {% include 'head-imports.html' %}
+</head>
+
+<body>
+  <div class="container">
+    <h2>Upload Image/phote File</h2>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
       <input type="file" name="file" />
       <input type="submit" />
-   </form>
-    <label for="email">Enter your email address:</label>
-    <input type="email" id="email" name="email_address" required />
-    <button type="submit">Submit</button>
-   <div class="container">
-      <h1>ALPRD</h1>
-      <div class="row">
-        <div class="col-sm">
-          <div class="image-container img-responsive">
-              <ul id="list">
-                  <!-- new content appears here -->
-                </ul>
-  
-          </div>
+    </form>
+  </div>
+  <div class="container">
+    <h2>Upload Video File</h2>
+    <form action="/uploadvideo" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" />
+      <input type="submit" />
+    </form>
+  </div>
+  <div class="container">
+    <h1>ALPRD</h1>
+    <div class="row">
+      <div class="col-sm">
+        <div class="image-container img-responsive">
+          <ul id="list">
+            <!-- new content appears here -->
+          </ul>
         </div>
       </div>
     </div>
-    {% include 'scripts.html' %}
+  </div>
+  {% include 'scripts.html' %}
 </body>
 <script>
-   const eventSource = new EventSource('http://localhost:5000/alprdsse');
-   const listElement = document.getElementById('list');
-   eventSource.onmessage = function (currentEvent) {
-       console.log(eventSource);
-     if (currentEvent.data.length > 0) {
-       const listElement = document.getElementById('list');
-       const newElement = document.createElement('li');
-       newElement.innerText = currentEvent.data;
-       const alprd = JSON.parse(currentEvent.data)
-       listElement.appendChild(newElement)
-     }
-   };
- </script>
+  const eventSource = new EventSource('http://localhost:5000/alprdsse');
+  const listElement = document.getElementById('list');
+  eventSource.onmessage = function (currentEvent) {
+    console.log(eventSource);
+    if (currentEvent.data.length > 0) {
+      const listElement = document.getElementById('list');
+      const newElement = document.createElement('li');
+      newElement.innerText = currentEvent.data;
+      const alprd = JSON.parse(currentEvent.data)
+      listElement.appendChild(newElement)
+    }
+  };
+</script>
+
 </html>

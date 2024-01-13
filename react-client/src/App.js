@@ -6,17 +6,17 @@ import UploadDb from "./components/upload-db";
 import CameraImages from "./components/camera-images";
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { VideoCameraIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
 
 export default function App() {
   return (
     <>
       <main className={`flex flex-col items-center justify-between`}>
-            <br/>
-            <Alprd />
-            <AlprdImages />
-            <FileUpload />
-            <UploadDb/>
+        <AlprdImages />
+        <Alprd />
+      </main>
+      <main className={`flex flex-col items-center justify-between`}>
+        <FileUpload />
+        <UploadDb />
       </main>
     </>
   )
@@ -24,6 +24,8 @@ export default function App() {
 
 
 export function FileUpload(props) {
+  const ImageStyle = { width: '250px', height: '300px' };
+
   const [image, setImage] = React.useState(null);
   const [createObjectURL, setCreateObjectURL] = React.useState(null);
 
@@ -47,18 +49,12 @@ export function FileUpload(props) {
 
   return (
     <div>
-      <p>
-        <input type="file" name="myImage"  accept="image/*"  onChange={uploadToClient} />
-        {image ? <img src={createObjectURL} className="image" alt="preview" /> : null}
-
-      </p>
-      <button type="submit" onClick={uploadToServer}
-      >
-        <br />
-        <p>
-          Send Video file to server
-        </p>
-        <VideoCameraIcon className="mr-4" />
+        <input type="file" name="myImage" accept="image/*" onChange={uploadToClient} />
+        {image ? <img src={createObjectURL} style={ImageStyle} className="image" alt="preview" /> : null}
+      <button type="submit" onClick={uploadToServer}>
+        <h2 className={`mb-3 text-2xl font-semibold`}>
+          Send  file to server
+        </h2>
       </button>
     </div>
   );

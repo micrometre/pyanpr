@@ -17,15 +17,7 @@ export default function Alprd() {
   }, []);
   return (
     <>
-                {state[0]}
-                <br />
-                {stateUuid}
-                <br />
-                {state[4]}
-                <br />
-                {state[1]}
-                <br />
-                {state[7]}
+    {state[4]}
     </>
   );
 }
