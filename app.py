@@ -128,7 +128,7 @@ def upload_file():
     return Response(alpr_result())
 def alpr_result():
         upcursor = alprdb.cursor()
-        upcursor.execute("SELECT * FROM uploads")
+        upcursor.execute("SELECT plate FROM uploads ORDER BY id DESC LIMIT 1;")
         upresult = upcursor.fetchall()
         j = json.dumps(upresult)
         return(j)
