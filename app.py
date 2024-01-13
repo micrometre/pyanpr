@@ -126,11 +126,6 @@ def upload_file():
             print((result_plate))
             return redirect(url_for('upload_file', name=filename))
     return Response(alpr_result())
-
-
-
-
-@app.route("/uploaddb", methods=["GET"])
 def alpr_result():
         upcursor = alprdb.cursor()
         upcursor.execute("SELECT * FROM uploads")
