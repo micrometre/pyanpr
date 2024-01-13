@@ -12,6 +12,7 @@ UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
 app = Flask(__name__, static_folder='static', static_url_path='')
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 alprdb = mysql.connector.connect(
@@ -25,8 +26,6 @@ r = redis.Redis(
     host='localhost',
     port=6379,
 )
-
-
 
 
 
@@ -113,12 +112,11 @@ def upload_file():
             alpr_arg4 = "-n 1"
             output = subprocess.check_output(['alpr',str(alpr_file), str(alpr_arg1), str(alpr_arg2), str(alpr_arg3), str(alpr_arg4)]).decode('utf-8')
             jl = json.loads(output)
-           #dict2 = dict(jl)
             result = jl["results"]
             result_plate = result[0]["plate"]
             alprcursor = alprdb.cursor()
             alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
-            alprcursor.execute("CREATE TABLE  IF NOT EXISTS  uploads (plate TEXT);")
+            alprcursor.execute("CREATE TABLE  IF NOT EXISTS  uploads (id INT KEY AUTO_INCREMENT,  plate TEXT);")
             sql = "INSERT INTO uploads (plate) VALUES (%s)"
             val = result_plate,
             alprcursor.execute(sql,val)
@@ -135,29 +133,57 @@ def alpr_result():
 
 
 
-app.route('/uploadvideo', methods=['GET', 'POST'])
-def upload_video():
+@app.route('/uploadvideo', methods=['GET', 'POST'])
+def upload_alpr_file():
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
+        # empty file without a filename.
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename('alprVideo.mp4')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('upload_video', name=filename))
+            alpr_arg1 = "-f"
+            output2 = subprocess.check_output(['alprd', str(alpr_arg1)]).decode('utf-8')
+            print('returned value:', output2)
+            data = json.loads(output2)
+            r.publish("alprd", json.dumps(data))
+            return redirect(url_for('upload_alpr_file', name=filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+    '''
+
+
+@app.route('/uploadalpr', methods=["POST"])
+def alpr_upload_video():
+    request_data = request.get_json()
+    print(request_data)
+    return("fff")
+
+
 
 @app.route("/video")
 def video():
     return send_file("./static/upload/alprVideo.mp4")
 
 
+
+
 @app.route("/") 
 def home():
     return render_template('index.html')      
+
+
 
 if __name__ == "__main__":
      app.config['TEMPLATES_AUTO_RELOAD']=True

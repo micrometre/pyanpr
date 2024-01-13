@@ -35,19 +35,4 @@
   </div>
   {% include 'scripts.html' %}
 </body>
-<script>
-  const eventSource = new EventSource('http://localhost:5000/alprdsse');
-  const listElement = document.getElementById('list');
-  eventSource.onmessage = function (currentEvent) {
-    console.log(eventSource);
-    if (currentEvent.data.length > 0) {
-      const listElement = document.getElementById('list');
-      const newElement = document.createElement('li');
-      newElement.innerText = currentEvent.data;
-      const alprd = JSON.parse(currentEvent.data)
-      listElement.appendChild(newElement)
-    }
-  };
-</script>
-
 </html>
