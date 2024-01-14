@@ -3,7 +3,7 @@ import React from "react";
 
 
 export function FileUpload(props) {
-  const ImageStyle = { width: '250px', height: '300px' };
+  const ImageStyle = { width: '250px', height: '200px' };
 
   const [image, setImage] = React.useState(null);
   const [createObjectURL, setCreateObjectURL] = React.useState(null);
@@ -31,7 +31,7 @@ export function FileUpload(props) {
       <input type="file" name="myImage" accept="image/*" onChange={uploadToClient} />
       {image ? <img src={createObjectURL} style={ImageStyle} className="image" alt="preview" /> : null}
       <button type="submit" onClick={uploadToServer}>
-        <h2 className={`mb-3 text-2xl font-semibold`}>
+        <h2 className={`text-2xl font-semibold`}>
           Send  image to server
         </h2>
       </button>

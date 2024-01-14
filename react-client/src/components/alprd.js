@@ -17,7 +17,9 @@ export default function Alprd() {
   }, []);
   return (
     <>
-    {state[4]}
+      <h2 className={`text-2xl font-semibold`}>
+      {state[4]}
+      </h2>
     </>
   );
 }
