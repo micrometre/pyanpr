@@ -7,17 +7,86 @@ import CameraImages from "./components/camera-images";
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { VideoCameraIcon } from '@heroicons/react/24/outline';
 import { FileUpload } from "./components/FileUpload";
+import { VideoUpload } from "./components/VideoUpload";
+import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from '@heroicons/react/24/outline'
 
-export default function App() {
+
+
+
+const people = [
+  {
+    name: 'Leslie Alexander',
+    role: 'Co-Founder / CEO',
+    imageUrl:
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  },
+  // More people...
+]
+
+export default function Example() {
+  return (
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-2">
+        <div className="max-w-2xl">
+        <FileUpload />
+        </div>
+        <div className="max-w-2xl">
+        <VideoUpload />
+        </div>
+      </div>
+      <div style={{
+           width:200,
+           position: "fixed",
+           bottom:30,
+           right:0
+        }}>
+        <AlprdImages />
+        </div>
+    </div>
+  )
+}
+
+
+
+
+export function App() {
   return (
     <>
-      <main className={`flex flex-col items-center justify-between`}>
+      <main className={`flex`}>
+        <FileUpload/>
+        <VideoUpload/>
+
+
+
+
+
+        
+        <div style={{
+           width:200,
+
+           position: "fixed",
+           bottom:30,
+           right:150
+        }}>
+
+        <Alprd/>
+        </div>
+        <div style={{
+           width:200,
+           position: "fixed",
+           bottom:30,
+           right:0
+        }}>
         <AlprdImages />
-        <FileUpload />
-        <UploadDb />
+        </div>
       </main>
     </>
   )
 }
+
+
+
+
+
 
 

@@ -11,7 +11,7 @@ export default function UploadDb() {
     async function fetchData() {
       setLoading(true);
       try {
-        const response = await fetch('http://172.187.216.226:5000/upload');
+        const response = await fetch('http://172.187.216.226:5000/uploaddb');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

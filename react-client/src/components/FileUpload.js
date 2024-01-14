@@ -32,7 +32,7 @@ export function FileUpload(props) {
       {image ? <img src={createObjectURL} style={ImageStyle} className="image" alt="preview" /> : null}
       <button type="submit" onClick={uploadToServer}>
         <h2 className={`mb-3 text-2xl font-semibold`}>
-          Send  file to server
+          Send  image to server
         </h2>
       </button>
     </div>

@@ -50,13 +50,14 @@ def alpr_from_video():
     alpr_img = get_images_alprd()
     alpr_img_plate = alpr_img[1]
     alprcursor = alprdb.cursor()
+    print(request_data)
     alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
     alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (uuid TEXT, plate TEXT, img TEXT );")
     sql = "INSERT INTO plates (uuid, plate, img) VALUES (%s, %s, %s)"
     val = (alpr_uuid, alpr_plate, alpr_img_plate)
     alprcursor.execute(sql,val)
     alprdb.commit()
-    #get_images_alprd()
+    get_images_alprd()
     try:
         data = json.loads(request.data)
         r.publish("alprd", json.dumps(data))
@@ -124,6 +125,8 @@ def upload_file():
             print((result_plate))
             return redirect(url_for('upload_file', name=filename))
     return Response(alpr_result())
+
+@app.route("/uploaddb", methods=["GET"])
 def alpr_result():
         upcursor = alprdb.cursor()
         upcursor.execute("SELECT plate FROM uploads ORDER BY id DESC LIMIT 1;")
@@ -164,11 +167,6 @@ def upload_alpr_file():
     '''
 
 
-@app.route('/uploadalpr', methods=["POST"])
-def alpr_upload_video():
-    request_data = request.get_json()
-    print(request_data)
-    return("fff")
 
 
 
