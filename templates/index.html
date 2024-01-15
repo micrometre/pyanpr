@@ -2,44 +2,26 @@
 <html>
 
 <head>
-  <title>Flask-SSE Demo - BigBoxCode</title>
   {% include 'head-imports.html' %}
 </head>
 
 <body>
-  <style>
-    .fixedContainer {
-      position: fixed;
-      left: 50%;
-      bottom: 0%;
-      background-color: coral;
-      width: 400px;
-      height: 100px;
-      border: 3px solid black;
-      overflow: scroll;
-    }
 
-    .fixedimg {
-      position: fixed;
-      left: 50%;
-      top: 0%;
-      background-color: coral;
-      width: 400px;
-      height: 500px;
-      border: 3px solid black;
-      overflow: scroll;
-    }
-  </style>
   <div class="container">
-    <h2>Upload Image/phote File</h2>
     <form action="/upload" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" />
+      <input type="file" accept="image/*" id="files" name="file" />
       <input type="submit" />
     </form>
+    <output id="list"></output>
+    <h2>Upload Image/phote File</h2>
+    <input type="file" name="file" />
+    </form>
   </div>
+
+
   <div class="container">
     <div style="margin: 10px auto;">
-      <video autoplay="autoplay" controls="controls" preload="preload" width="320" height="240" >
+      <video autoplay="autoplay" controls="controls" preload="preload" width="320" height="240">
         <source src="http://172.187.216.226:5000/video" type="video/mp4">
         </source>
       </video>
