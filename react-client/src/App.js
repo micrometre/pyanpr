@@ -30,10 +30,6 @@ export default function Example() {
         <FileUpload />
         <UploadDb />
         </div>
-
-        <div className="max-w-2xl">
-        <VideoUpload />
-        </div>
       </div>
 
         <div style={{

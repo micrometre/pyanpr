@@ -39,8 +39,9 @@ def get_images_alprd():
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         alpr_images = {"img": "http://172.187.216.226:5000/images/{}\n".format(filename)}
-        r.publish("bigboxcode", json.dumps((alpr_images)))
-        return ("alprd", json.dumps("http://172.187.216.226:5000/images/{}\n".format(filename)))
+        alpr_images_sse = ("http://172.187.216.226:5000/images/{}".format(filename))
+        r.publish("bigboxcode", json.dumps((alpr_images_sse)))
+        return ("alprd", json.dumps("http://172.187.216.226:5000/images/{}".format(filename)))
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
     request_data = request.get_json()
@@ -59,7 +60,7 @@ def alpr_from_video():
     alprdb.commit()
     get_images_alprd()
     try:
-        data = json.loads(request.data)
+        data = alpr_plate
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
@@ -123,7 +124,7 @@ def upload_file():
             alprcursor.execute(sql,val)
             alprdb.commit()
             print((output))
-            return redirect(url_for('upload_file', name=filename))
+            return redirect(url_for('home', name=filename))
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -163,7 +164,7 @@ def upload_alpr_file():
            #output2 = subprocess.check_output(['alprd', str(alpr_arg1)]).decode('utf-8')
            #print('returned value:', output2)
            #data = json.loads(output2)
-            return redirect(url_for('upload_alpr_file', name=filename))
+            return redirect(url_for('home', name=filename))
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -174,6 +175,10 @@ def upload_alpr_file():
     </form>
     '''
 
+@app.route('/display/<filename>')
+def display_video(filename):
+	print('display_video filename: ' + filename)
+	return redirect(url_for('static', filename='upload/' + filename), code=301)
 
 
 

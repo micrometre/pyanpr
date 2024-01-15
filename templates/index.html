@@ -7,6 +7,29 @@
 </head>
 
 <body>
+  <style>
+    .fixedContainer {
+      position: fixed;
+      left: 50%;
+      bottom: 0%;
+      background-color: coral;
+      width: 400px;
+      height: 100px;
+      border: 3px solid black;
+      overflow: scroll;
+    }
+
+    .fixedimg {
+      position: fixed;
+      left: 50%;
+      top: 0%;
+      background-color: coral;
+      width: 400px;
+      height: 500px;
+      border: 3px solid black;
+      overflow: scroll;
+    }
+  </style>
   <div class="container">
     <h2>Upload Image/phote File</h2>
     <form action="/upload" method="POST" enctype="multipart/form-data">
@@ -15,24 +38,34 @@
     </form>
   </div>
   <div class="container">
+    <div style="margin: 10px auto;">
+      <video autoplay="autoplay" controls="controls" preload="preload" width="320" height="240" >
+        <source src="http://172.187.216.226:5000/video" type="video/mp4">
+        </source>
+      </video>
+    </div>
     <h2>Upload Video File</h2>
     <form action="/uploadvideo" method="POST" enctype="multipart/form-data">
       <input type="file" name="file" />
       <input type="submit" />
     </form>
   </div>
-  <div class="container">
-    <h1>ALPRD</h1>
-    <div class="row">
-      <div class="col-sm">
-        <div class="image-container img-responsive">
-          <ul id="list">
-            <!-- new content appears here -->
-          </ul>
-        </div>
+
+  <div class="col-lg-6 col-md-8 mx-auto">
+    <script src="js/main.js"></script>
+    <div class="fixedContainer">
+      <div id="box">
       </div>
     </div>
+    <div class="fixedimg">
+      <div id="image-box"></div>
+    </div>
   </div>
+
+
+  </section>
+
   {% include 'scripts.html' %}
 </body>
+
 </html>
