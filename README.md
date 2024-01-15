@@ -1,10 +1,10 @@
-# opena alpr licence plate recognition application built with Python-Flask 
+# OpenAlpr licence plate recognition application built with Python-Flask 
 
 
 ---
 ## Technology Stack
 * Python3
+* OpenAlpr
 
-## Finished
-- Initial app
 
+![Alt text](static/github/demo1.png?raw=true "Title")

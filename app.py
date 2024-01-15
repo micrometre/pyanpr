@@ -122,9 +122,19 @@ def upload_file():
             val = result_plate,
             alprcursor.execute(sql,val)
             alprdb.commit()
-            print((result_plate))
+            print((output))
             return redirect(url_for('upload_file', name=filename))
-    return Response(alpr_result())
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+    '''
+
+
 
 @app.route("/uploaddb", methods=["GET"])
 def alpr_result():
@@ -143,18 +153,16 @@ def upload_alpr_file():
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
-        # empty file without a filename.
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename('alprVideo.mp4')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            alpr_arg1 = "-f"
-            output2 = subprocess.check_output(['alprd', str(alpr_arg1)]).decode('utf-8')
-            print('returned value:', output2)
-            data = json.loads(output2)
-            r.publish("alprd", json.dumps(data))
+           #alpr_arg1 = "-f"
+           #output2 = subprocess.check_output(['alprd', str(alpr_arg1)]).decode('utf-8')
+           #print('returned value:', output2)
+           #data = json.loads(output2)
             return redirect(url_for('upload_alpr_file', name=filename))
     return '''
     <!doctype html>

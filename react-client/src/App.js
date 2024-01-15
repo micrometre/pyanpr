@@ -3,7 +3,6 @@ import AlprdImages from "./components/alprd-images";
 import Alprd from "./components/alprd";
 import AlprVideo from "./components/alprd-video";
 import UploadDb from "./components/upload-db";
-import CameraImages from "./components/camera-images";
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { VideoCameraIcon } from '@heroicons/react/24/outline';
 import { FileUpload } from "./components/FileUpload";
@@ -29,7 +28,9 @@ export default function Example() {
       <div className="mx-auto grid max-w-7xl gap-x-2 gap-y-2 px-6 lg:px-8 xl:grid-cols-2">
         <div className="max-w-2xl">
         <FileUpload />
+        <UploadDb />
         </div>
+
         <div className="max-w-2xl">
         <VideoUpload />
         </div>
