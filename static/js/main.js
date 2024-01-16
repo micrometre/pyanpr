@@ -1,26 +1,10 @@
 
 
 
-
-
-
-
-
 if (typeof (EventSource) !== "undefined") {
   var source = new EventSource("http://172.187.216.226:5000/alprdsse");
   source.onmessage = function (event) {
 
-    const reducer = (state = []) => {
-      return state;
-    };
-    const store = Redux.createStore(reducer);
-
-    store.subscribe(() => {
-      console.log('subscribe', store.getState());
-    });
-
-
-    store.dispatch({ type: "ADD_USER" });
 
     const box = document.getElementById('box')
     const alpr = document.createElement('h2')
@@ -51,22 +35,28 @@ if (typeof (EventSource) !== "undefined") {
 
 
 
-
 if (typeof (EventSource) !== "undefined") {
   var source = new EventSource("http://172.187.216.226:5000/images");
   source.onmessage = function (event) {
     const box = document.getElementById('image-box')
     const alpr = document.createElement('h2')
     const alprImg = document.createElement('img');
+    alprImg.setAttribute('id', 'alpr-image');
     alpr.innerHTML += event.data.replace(/[{("")}]/g, '') + "<br>";
     alprImg.src = event.data.replace(/[{("")}]/g, '');
     box.insertBefore(alpr, box.firstChild)
     box.insertBefore(alprImg, box.firstChild)
+    const img = document.getElementById("alpr-image")
+    img.addEventListener("error", function (event) {
+      event.target.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/No_sign.svg/192px-No_sign.svg.png";
+
+      event.onerror = null
+    })
+
   };
 } else {
   document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
 }
-
 
 
 

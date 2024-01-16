@@ -8,9 +8,13 @@
 </head>
 
 <body>
-  <div id="app"></div>
+<div>
 
+  <input type="text" class="userInput" />
+  <button class="addUser">Add user</button>
+  <ul class="list"></ul>
 
+</div>
   <div class="container">
     <form action="/upload" method="POST" enctype="multipart/form-data">
       <input type="file" accept="image/*" id="files" name="file" />
@@ -18,7 +22,6 @@
     </form>
     <output id="list"></output>
     <h2>Upload Image/phote File</h2>
-    <input type="file" name="file" />
     </form>
   </div>
 
