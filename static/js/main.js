@@ -1,6 +1,4 @@
 
-
-
 if (typeof (EventSource) !== "undefined") {
   var source = new EventSource("http://172.187.216.226:5000/alprdsse");
   source.onmessage = function (event) {
@@ -14,7 +12,6 @@ if (typeof (EventSource) !== "undefined") {
 } else {
   document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
 }
-
 
 
 

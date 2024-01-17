@@ -3,18 +3,17 @@
 
 <head>
   {% include 'head-imports.html' %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.js"></script>
+
 
 </head>
-
+    <style>
+      ul { list-style: none; padding: 0; }
+      label { padding: 5px; display: flex; gap: 5px; }
+    </style>
 <body>
-<div>
+  <div>
 
-  <input type="text" class="userInput" />
-  <button class="addUser">Add user</button>
-  <ul class="list"></ul>
-
-</div>
+  </div>
   <div class="container">
     <form action="/upload" method="POST" enctype="multipart/form-data">
       <input type="file" accept="image/*" id="files" name="file" />
@@ -58,6 +57,7 @@
   </script>
 
   </section>
+  <script type="module" src="js/preact.js"></script>
 
   {% include 'scripts.html' %}
 </body>
