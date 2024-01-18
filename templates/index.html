@@ -21,22 +21,7 @@
         </form>
         <output id="list"></output>
         <h2>Upload Image/phote File</h2>
-        <script>
-
-function handleFileSelect(evt) {
-    for (const file of evt.target.files) {
-      const div = document.createElement('div')
-      const src = URL.createObjectURL(file)
-      div.innerHTML =
-        `<img style="height: 250px; border: 1px solid #000; margin: 5px"` +
-        `src="${src}" title="${escape(file.name)}">`
-  
-      document.getElementById('list').insertBefore(div, null)
-    }
-  }
-  
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-        </script>
+        <script src="js/upload.js"></script>
     </div>
 </body>
 
