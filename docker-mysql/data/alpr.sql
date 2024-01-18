@@ -1,8 +1,6 @@
-CREATE TABLE items (
-            id INTEGER PRIMARY KEY,
-            plate TEXT,
-            uuid TEXT,
-            img TEXT
+CREATE TABLE uploads (
+            id INT KEY AUTO_INCREMENT,
+            plate TEXT
           );
-INSERT INTO items VALUES(1,'LF9X5','MicrometreUK-cam1-1701462987011',NULL);
+INSERT INTO uploads VALUES(1,'LF9X5');
 COMMIT;
