@@ -1,8 +1,43 @@
 <html>
 
+<head>
+
+</head>
+<style>
+    #alpr-image {
+        background-color: coral;
+        width: 300px;
+        height: 200px;
+        border: 3px solid black;
+    }
+</style>
+
 <body>
     <script type="module" src="js/solid.js"></script>
+    <div class="container" style="margin-top: 100px;">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" accept="image/*" id="files" name="file" />
+            <input type="submit" />
+        </form>
+        <output id="list"></output>
+        <h2>Upload Image/phote File</h2>
+        <script>
 
+function handleFileSelect(evt) {
+    for (const file of evt.target.files) {
+      const div = document.createElement('div')
+      const src = URL.createObjectURL(file)
+      div.innerHTML =
+        `<img style="height: 250px; border: 1px solid #000; margin: 5px"` +
+        `src="${src}" title="${escape(file.name)}">`
+  
+      document.getElementById('list').insertBefore(div, null)
+    }
+  }
+  
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+        </script>
+    </div>
 </body>
 
 </html>
