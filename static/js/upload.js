@@ -3,7 +3,7 @@ function handleFileSelect(evt) {
     const div = document.createElement('div')
     const src = URL.createObjectURL(file)
     div.innerHTML =
-      `<img style="height: 250px; border: 1px solid #000; margin: 5px"` +
+      `<img style="border: 1px solid #000; margin: 5px"  class="img-thumbnail"  ` +
       `src="${src}" title="${escape(file.name)}">`
 
     document.getElementById('list').insertBefore(div, null)

@@ -36,8 +36,8 @@ const PlatesImages = () => {
         })
     };
     return html`
+            <img src=${PlatesImages} class="img-thumbnail" id="alpr-image" alt="...">
     <div  id="alpr-image-div" >${PlatesImages}</div>
-    <img  src=${PlatesImages} alt="Solid logo" id="alpr-image"
     />
     `;
 };
