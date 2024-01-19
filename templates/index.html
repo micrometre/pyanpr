@@ -42,10 +42,9 @@
                             Upload Video File
                         </h2>
                         <div>
-                            <video autoplay="autoplay" controls="controls" preload="preload" width="320" height="240">
-                                <source src="http://172.187.216.226:5000/video" type="video/mp4">
-                                </source>
-                            </video>
+                            <div class="embed-responsive embed-responsive-4by3">
+                                <iframe class="embed-responsive-item" src="http://172.187.216.226:5000/video"></iframe>
+                            </div>
                         </div>
                         <h2>Upload Video File</h2>
                         <form action="/uploadvideo" method="POST" enctype="multipart/form-data">
@@ -60,8 +59,9 @@
             </div>
 
         </div>
-    </div>
 
+
+    </div>
 
 
 
