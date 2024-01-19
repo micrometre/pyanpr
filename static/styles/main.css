@@ -19,3 +19,22 @@
     border: 3px solid black;
     overflow: scroll;
   }
+
+
+      #alpr-image {
+        background-color: coral;
+        width: 300px;
+        height: 200px;
+        border: 3px solid black;
+    }
+
+    #Video_Progress_Status {
+        width: 50%;
+        background-color: #ddd;
+    }
+
+    #videoprogressBar {
+        width: 2%;
+        height: 20px;
+        background-color: #4CAF50;
+    }
