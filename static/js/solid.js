@@ -11,7 +11,11 @@ const Plates = () => {
         setPlates(alprdData)
     };
     return html`
-    <div>${plates}</div>
+     <div class="position-relative overflow-hidden p-1 p-md-1 m-md-1 text-center">
+        <h2 class="pt-2 mt-2 mb-2 display-4 fw-bold">
+        ${plates}
+       </h2>
+    </div>
     `;
 };
 render(Plates, document.body);
@@ -36,8 +40,16 @@ const PlatesImages = () => {
         })
     };
     return html`
-            <img src=${PlatesImages} class="img-thumbnail" id="alpr-image" alt="...">
-    <div  id="alpr-image-div" >${PlatesImages}</div>
+
+
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+         <img src=${PlatesImages} class="img-thumbnail" id="alpr-image" alt="...">
+        <div  id="alpr-image-div" >${PlatesImages}</div>
+    </div>
+
+
+
+
     `;
 };
 render(PlatesImages, document.body);
