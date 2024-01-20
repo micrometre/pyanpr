@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'head-imports.html' %}
+</head>
+
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/"
+                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline">Menu</span>
+                    </a>
+                    <hr>
+                </div>
+            </div>
+            <div class="col py-3">
+                <div class="container px-1 py-1" id="custom-cards">
+
+                    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+                        <div class="col">
+                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
+                                style="background-image: url('unsplash-photo-1.jpg');">
+                                <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow0">
+                                    <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
+                                        Upload Image/phote File
+                                    </h2>
+                                    <div>
+                                        <form action="/upload" method="POST" enctype="multipart/form-data">
+                                            <input type="file" accept="image/*" id="files" name="file" />
+                                            <input type="submit" />
+                                        </form>
+                                    </div>
+                                    <output id="list"></output>
+                                    <script src="js/upload.js"></script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
+                                style="background-image: url('unsplash-photo-2.jpg');">
+                                <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                    <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
+                                        Upload Video File
+                                    </h2>
+                                    <div>
+                                        <div class="embed-responsive embed-responsive-4by3">
+                                            <iframe class="embed-responsive-item"
+                                                src="http://172.187.216.226:5000/video"></iframe>
+                                        </div>
+                                    </div>
+                                    <h2>Upload Video File</h2>
+                                    <form action="/uploadvideo" method="POST" enctype="multipart/form-data">
+                                        <input type="file" name="file" />
+                                        <input onclick="update()" type="submit" />
+                                    </form>
+                                    <div id="Video_Progress_Status">
+                                        <div id="videoprogressBar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="module" src="js/solid.js"></script>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+{% include 'scripts.html' %}
+
+</html>

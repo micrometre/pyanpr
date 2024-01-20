@@ -1,7 +1,8 @@
-import { onCleanup, createSignal } from "https://esm.sh/solid-js@1.8.1";
+import { onCleanup, createSignal, createResource } from "https://esm.sh/solid-js@1.8.1";
 import { render } from "https://esm.sh/solid-js@1.8.1/web";
 import html from "https://esm.sh/solid-js@1.8.1/html";
-
+const fetchUser = async (id) =>
+  (await fetch(`https://swapi.dev/api/people/${id}/`)).json();
 
 const Plates = () => {
     const [plates, setPlates] = createSignal([])
@@ -53,3 +54,20 @@ const PlatesImages = () => {
     `;
 };
 render(PlatesImages, document.body);
+
+
+const PlatesData = () => {
+  const [PlatesImages, setPlatesImages] = createSignal([])
+  const [userId, setUserId] = createSignal();
+  const [user] = createResource(userId, fetchUser);
+  console.log(fetchUser(1))
+  return html`
+  <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+  <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
+   Upload Image/phote File
+ </h2>
+
+  `;
+};
+render(PlatesData, document.body);
+

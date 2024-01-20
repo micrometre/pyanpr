@@ -12,12 +12,12 @@
 
 
 
-    <div class="container px-1 py-1" id="custom-cards">
+    <div class="container px-4 py-5" id="custom-cards">
 
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <div class="col">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
-                    style="background-image: url('unsplash-photo-1.jpg');">
+                    >
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow0">
                         <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
                             Upload Image/phote File
@@ -36,15 +36,16 @@
 
             <div class="col">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
-                    style="background-image: url('unsplash-photo-2.jpg');">
+                    >
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                         <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
                             Upload Video File
                         </h2>
                         <div>
-                            <div class="embed-responsive embed-responsive-4by3">
-                                <iframe class="embed-responsive-item" src="http://172.187.216.226:5000/video"></iframe>
-                            </div>
+                            <video autoplay="autoplay" controls="controls" preload="preload" width="320" height="240">
+                                <source src="http://172.187.216.226:5000/video" type="video/mp4">
+                                </source>
+                            </video>
                         </div>
                         <h2>Upload Video File</h2>
                         <form action="/uploadvideo" method="POST" enctype="multipart/form-data">
@@ -59,9 +60,8 @@
             </div>
 
         </div>
-
-
     </div>
+
 
 
 
