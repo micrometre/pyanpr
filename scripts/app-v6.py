@@ -140,10 +140,9 @@ def upload_file():
 @app.route("/uploaddb", methods=["GET"])
 def alpr_result():
         upcursor = alprdb.cursor()
-        upcursor.execute("SELECT * FROM uploads;")
+        upcursor.execute("SELECT plate FROM uploads ORDER BY id DESC LIMIT 1;")
         upresult = upcursor.fetchall()
         j = json.dumps(upresult)
-        print(j)
         return(j)
 
 
