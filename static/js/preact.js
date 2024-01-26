@@ -18,7 +18,6 @@ function Plates() {
   evtSource.onmessage = (event) => {
     const alprdData = JSON.parse(event.data)
     setState(alprdData)
-    console.log(state)
   };
 
 
@@ -37,7 +36,6 @@ function PlatesImages() {
   evtSource.onmessage = (event) => {
     const alprdData = JSON.parse(event.data)
     setState(alprdData)
-    console.log(state)
   };
 
 

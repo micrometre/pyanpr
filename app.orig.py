@@ -8,7 +8,6 @@ import inotify.adapters
 import logging
 import subprocess
 
-
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
@@ -141,23 +140,16 @@ def upload_file():
     '''
 
 
+
 @app.route("/uploaddb", methods=["GET"])
 def alpr_result():
-        cursor = alprdb.cursor()
-        query = "SELECT * FROM uploads"  # Replace with your desired query
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        result = []
-        for row in rows:
-            d = {}
-            for i, col in enumerate(cursor.description):
-                d[col[0]] = row[i]
-            result.append(d)
-        json_result = json.dumps(result)
-        print((json_result))
-        return(json_result)
-
-
+        upcursor = alprdb.cursor()
+        #upcursor.execute("SELECT * FROM uploads;")
+        upcursor.execute("SELECT plate FROM uploads ORDER BY id DESC LIMIT 1;")
+        upresult = upcursor.fetchall()
+        j = json.dumps(upresult)
+        print(type(j))
+        return(j)
 
 
 
@@ -201,9 +193,13 @@ def display_video(filename):
 def video():
     return send_file("./static/upload/alprVideo.mp4")
 
+
+
+
 @app.route("/") 
 def home():
     return render_template('index.html')      
+
 
 
 if __name__ == "__main__":

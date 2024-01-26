@@ -2,6 +2,10 @@ import { onCleanup, createSignal, createResource } from "https://esm.sh/solid-js
 import { render } from "https://esm.sh/solid-js@1.8.1/web";
 import html from "https://esm.sh/solid-js@1.8.1/html";
 
+
+
+
+
 const Plates = () => {
     const [plates, setPlates] = createSignal([])
     var source = new EventSource("http://172.187.216.226:5000/alprdsse");
@@ -29,7 +33,6 @@ const PlatesImages = () => {
     var source = new EventSource("http://172.187.216.226:5000/images");
     source.onmessage = function (event) {
         const alprdData = JSON.parse(event.data)
-        console.log(alprdData)
         setPlatesImages(alprdData)
         const img = document.getElementById("alpr-image")
         img.addEventListener("error", function (event) {

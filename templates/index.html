@@ -1,87 +1,26 @@
-<!DOCTYPE html>
 <html>
 
-<head>
-    {% include 'head-imports.html' %}
-    <style>
-        video {
-            width: 100%;
-            height: auto;
-        }
-    </style>
-</head>
-
-
 <body>
-    <script type="module" src="js/solid.js"></script>
+    <script type="module">
+        import { onCleanup, createSignal, createResource } from "https://esm.sh/solid-js@1.8.1";
+        import { render } from "https://esm.sh/solid-js@1.8.1/web";
+        import html from "https://esm.sh/solid-js@1.8.1/html";
+        const response = await fetch(
+         `http://172.187.216.226:5000/uploaddb`
+        );
+        const results = await response.json();
 
+        console.log(results)
 
-
-
-    <div class="container px-4 py-5" id="custom-cards">
-
-        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-            <p id="demo">Fetch a file to change this text.</p>
-
-            <script>
-                let file = "http://172.187.216.226:5000/uploaddb"
-                fetch(file)
-                    .then(x => x.text())
-                    .then(y => document.getElementById("demo").innerHTML = y);
-
-            </script>
-            <div class="col">
-                <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
-                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow0">
-                        <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
-                            Upload Image/phote File
-                        </h2>
-                        <div>
-                            <form action="/upload" method="POST" enctype="multipart/form-data">
-                                <input type="file" accept="image/*" id="files" name="file" />
-                                <input type="submit" />
-                            </form>
-                        </div>
-                        <output id="list"></output>
-                        <script src="js/upload.js"></script>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
-                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                        <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
-                            Upload Video File
-                        </h2>
-                        <div>
-          
-                            <video width="400" controls>
-                                <source src="http://172.187.216.226:5000/video" type="video/mp4">
-                                Your browser does not support HTML5 video.
-                            </video>
-                        </div>
-                        <h2>Upload Video File</h2>
-                        <form action="/uploadvideo" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="file" />
-                            <input onclick="update()" type="submit" />
-                        </form>
-                        <div id="Video_Progress_Status">
-                            <div id="videoprogressBar"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-
-
-
-
+        const App = () => {
+            const [userId, setUserId] = createSignal()
+            return html`
+            <div>ttttt</div>
+            `;
+            // or
+        };
+        render(App, document.body);
+    </script>
 </body>
-{% include 'scripts.html' %}
 
 </html>
