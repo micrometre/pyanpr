@@ -1,26 +1,16 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>React CDN</title>
+   <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+   <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+   <script src='https://unpkg.com/babel-standalone@6.26.0/babel.js'></script>
+</head>
 <body>
-    <script type="module">
-        import { onCleanup, createSignal, createResource } from "https://esm.sh/solid-js@1.8.1";
-        import { render } from "https://esm.sh/solid-js@1.8.1/web";
-        import html from "https://esm.sh/solid-js@1.8.1/html";
-        const response = await fetch(
-         `http://172.187.216.226:5000/uploaddb`
-        );
-        const results = await response.json();
-
-        console.log(results)
-
-        const App = () => {
-            const [userId, setUserId] = createSignal()
-            return html`
-            <div>ttttt</div>
-            `;
-            // or
-        };
-        render(App, document.body);
-    </script>
+   <div id="root"></div>
+   <script src="js/react.js" type="text/babel"></script>
 </body>
-
 </html>
