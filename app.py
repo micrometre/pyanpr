@@ -42,8 +42,14 @@ def get_images_alprd():
         alpr_images_sse = ("http://172.187.216.226:5000/images/{}".format(filename))
         r.publish("bigboxcode", json.dumps((alpr_images_sse)))
         return ("alprd", json.dumps("http://172.187.216.226:5000/images/{}".format(filename)))
+
+def get_inotify():
+    print("test")
+
+
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
+    get_images_alprd()
     request_data = request.get_json()
     alpr_results = request_data["results"]
     alpr_uuid = request_data["uuid"]
@@ -51,14 +57,12 @@ def alpr_from_video():
     alpr_img = get_images_alprd()
     alpr_img_plate = alpr_img[1]
     alprcursor = alprdb.cursor()
-    print(request_data)
     alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
     alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (id INT KEY AUTO_INCREMENT, uuid TEXT, plate TEXT, img TEXT );")
     sql = "INSERT INTO plates (uuid, plate, img) VALUES (%s, %s,%s)"
     val = (alpr_uuid, alpr_plate, alpr_img_plate)
     alprcursor.execute(sql,val)
     alprdb.commit()
-    get_images_alprd()
     try:
         data = alpr_plate
         r.publish("alprd", json.dumps(data))
@@ -144,7 +148,7 @@ def alpr_result():
         upcursor.execute("SELECT plate FROM uploads ORDER BY id DESC LIMIT 1;")
         upresult = upcursor.fetchall()
         j = json.dumps(upresult)
-        print(j)
+        print(type(j))
         return(j)
 
 
