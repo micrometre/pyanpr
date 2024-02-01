@@ -23,5 +23,9 @@ restart:
 remove:
 	docker compose down -v
 	docker compose rm -f
+
 install_depen:
 	sudo apt-get install python3-opencv  inotify-tools -y	
+
+requirements:
+	pip install -r requirements.txt
