@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     {% include 'head-imports.html' %}
-
 </head>
 
+
 <body>
-    <div id="root"></div>
-    <script src="js/react.js" type="text/babel"></script>
-    <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+    <script type="module" src="js/solid.js"></script>
+
+
+
 
     <div class="container px-4 py-5" id="custom-cards">
 
@@ -17,7 +18,7 @@
             <p id="demo">Fetch a file to change this text.</p>
 
             <script>
-                let file = "http://172.187.216.226:5000/uploaddb"
+                let file = "http://127.0.0.1:5000/uploaddb"
                 fetch(file)
                     .then(x => x.text())
                     .then(y => document.getElementById("demo").innerHTML = y);
@@ -48,8 +49,8 @@
                             Upload Video File
                         </h2>
                         <div>
-                            <video  controls="controls" preload="preload" width="320" height="240">
-                                <source src="http://172.187.216.226:5000/video" type="video/mp4">
+                            <video autoplay="autoplay" controls="controls" preload="preload" width="320" height="240">
+                                <source src="http://127.0.0.1:5000/video" type="video/mp4">
                                 </source>
                             </video>
                         </div>
@@ -68,7 +69,10 @@
         </div>
     </div>
 
-    
+
+
+
+
 
 </body>
 {% include 'scripts.html' %}

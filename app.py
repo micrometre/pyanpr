@@ -40,9 +40,9 @@ def get_images_alprd():
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         alpr_images = {"img": "http://172.187.216.226:5000/images/{}\n".format(filename)}
-        alpr_images_sse = ("http://172.187.216.226:5000/images/{}".format(filename))
+        alpr_images_sse = ("http://127.0.0.1:5000/images/{}".format(filename))
         r.publish("bigboxcode", json.dumps((alpr_images_sse)))
-        return ("alprd", json.dumps("http://172.187.216.226:5000/images/{}".format(filename)))
+        return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
 
 def get_inotify():
     print("test")
@@ -174,10 +174,6 @@ def upload_alpr_file():
         if file and allowed_file(file.filename):
             filename = secure_filename('alprVideo.mp4')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-           #alpr_arg1 = "-f"
-           #output2 = subprocess.check_output(['alprd', str(alpr_arg1)]).decode('utf-8')
-           #print('returned value:', output2)
-           #data = json.loads(output2)
             return redirect(url_for('home', name=filename))
     return '''
     <!doctype html>
