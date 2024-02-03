@@ -40,23 +40,17 @@ def check_key():
     key = request.args.get('key')  # Retrieve key from request arguments
     field = request.args.get('field')  # Retrieve field from request arguments
     exists = r.hexists(key, field)  # Check if the field exists in the hash
-    return {'exists': exists}
+    getredis = r.hget(key, field)  # Check if the field exists in the hash
+    b = format(getredis)
+    print(b)
+    return(b)
 
 
 
-@app.route("/hello/<name>")
-def hello_there(name):
-    content = "Hello there, " + name 
-    return content
-    
 @app.route("/alprdb", methods=["GET"])
 def list_items():
-    a = r.hgetall("alpr_plate_to_img")
+    a = r.hgetall("alpr_plate_to_id")
     b = format(a)
-    r.hset('user:1000', 'name', 'John Doe')
-    r.hset('user:1000', 'email', 'john.doe@example.com')
-    field_exists = r.hexists('alpr_plate_to_img', '010FY')  # True
-    print("Does the 'email' field exist? ", field_exists)
     return(b)
     
 @app.route('/alprd', methods=["POST"])
@@ -69,12 +63,14 @@ def alpr_from_video():
     alpr_img_plate = alpr_img[1]
     try:
         data = alpr_plate
-        r.hset("alpr_plate_to_img", alpr_plate, alpr_img_plate)
+        r.hset("alpr_plate_to_id", alpr_plate, alpr_plate)
+        r.hset("alpr_plate_id", alpr_plate, alpr_img_plate)
         r.hset(
             f"alpr_plate:{alpr_plate}",
             mapping={
+                "alpr_plate_id": alpr_plate,
                 "alpr_plate": alpr_plate,
-                "alpr_img": alpr_img_plate,
+                "alpr_plate_img": alpr_img_plate,
             },
         )
         r.publish("alprd", json.dumps(data))
