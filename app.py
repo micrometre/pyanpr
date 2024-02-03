@@ -6,7 +6,8 @@ import redis
 import inotify.adapters
 import logging
 import subprocess
-
+from datetime import datetime
+import re
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
@@ -34,11 +35,28 @@ def get_images_alprd():
         r.publish("bigboxcode", json.dumps((alpr_images_sse)))
         return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
 
+@app.route('/check_key', methods=['GET'])
+def check_key():
+    key = request.args.get('key')  # Retrieve key from request arguments
+    field = request.args.get('field')  # Retrieve field from request arguments
+    exists = r.hexists(key, field)  # Check if the field exists in the hash
+    return {'exists': exists}
+
+
+
+@app.route("/hello/<name>")
+def hello_there(name):
+    content = "Hello there, " + name 
+    return content
+    
 @app.route("/alprdb", methods=["GET"])
 def list_items():
     a = r.hgetall("alpr_plate_to_img")
     b = format(a)
-    print(type(b))
+    r.hset('user:1000', 'name', 'John Doe')
+    r.hset('user:1000', 'email', 'john.doe@example.com')
+    field_exists = r.hexists('alpr_plate_to_img', '010FY')  # True
+    print("Does the 'email' field exist? ", field_exists)
     return(b)
     
 @app.route('/alprd', methods=["POST"])
@@ -126,6 +144,8 @@ def upload_file():
       <input type=submit value=Upload>
     </form>
     '''
+
+
 
 
 @app.route("/uploaddb", methods=["GET"])
