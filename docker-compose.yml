@@ -14,11 +14,36 @@ services:
     networks:
       - redis-network
 
+  redis2:
+    image: redis:latest
+    container_name: redis_hset
+    command: redis-server
+    volumes:
+      - redis:/var/lib/redis
+      - redis-config:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6378:6379
+    networks:
+      - redis-network
+  redis-commander2:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander2
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+      - HTTP_USER=root
+      - HTTP_PASSWORD=qwerty
+    ports:
+      - 8082:8081
+    networks:
+      - redis-network
+    depends_on:
+      - redis2
+
   redis-commander:
     image: rediscommander/redis-commander:latest
     container_name: redis-commander
     environment:
-      - REDIS_HOSTS=local:redis:6379
+      - REDIS_HOSTS=local:redis:6378
       - HTTP_USER=root
       - HTTP_PASSWORD=qwerty
     ports:
@@ -26,7 +51,8 @@ services:
     networks:
       - redis-network
     depends_on:
-      - redis
+      - redis2
+
   alpr:
     build: ./openalpr-docker
     container_name: alprd-main
@@ -60,6 +86,7 @@ networks:
     driver: bridge      
 volumes:
   redis:
+  redis2:
   data:
   redis-config:
 
