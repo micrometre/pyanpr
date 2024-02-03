@@ -1,3 +1,4 @@
+
 import os
 from flask import Flask, flash, request, json, jsonify, redirect, url_for, send_file, render_template, Response
 from flask_cors import CORS
@@ -44,8 +45,14 @@ def get_images_alprd():
         r.publish("bigboxcode", json.dumps((alpr_images_sse)))
         return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
 
-
-
+@app.route("/alprdb", methods=["GET"])
+def list_items():
+    list_alpr= []
+    a = r.hgetall("alpr_plate_to_img")
+    b = format(a)
+    print(type(b))
+    return(b)
+    
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
     get_images_alprd()
@@ -55,38 +62,13 @@ def alpr_from_video():
     alpr_plate = alpr_results[0]["plate"]
     alpr_img = get_images_alprd()
     alpr_img_plate = alpr_img[1]
-    alpr_id = r.incr("alpr_ids")
-    r.hset(
-            f"alpr_id:{alpr_id}",
-            mapping={
-                "alpr_id": alpr_id,
-                "alpr_uuid": alpr_uuid,
-                "alpr_plate": alpr_plate,
-                "alpr_img": alpr_img_plate,
-            },
-        )
-    r.hset("alpr_plate_to_id", alpr_plate, alpr_id)
-    print(alpr_img_plate)
-    alprcursor = alprdb.cursor()
-    alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
-    alprcursor.execute("CREATE TABLE  IF NOT EXISTS  plates (id INT KEY AUTO_INCREMENT, uuid TEXT, plate TEXT, img TEXT );")
-    sql = "INSERT INTO plates (uuid, plate, img) VALUES (%s, %s,%s)"
-    val = (alpr_uuid, alpr_plate, alpr_img_plate)
-    alprcursor.execute(sql,val)
-    alprdb.commit()
+    alpr_id = (alpr_plate)
     try:
         data = alpr_plate
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
         return jsonify(status="fail", message="not published")
-
-@app.route("/test", methods=["GET"])
-def list_items():
-    items = []
-    stored_items  = r.hgetall("alpr_plate_to_id")
-    print(stored_items)
-    return("test")
 
 
 @app.route('/alprdsse', methods=["GET"])
