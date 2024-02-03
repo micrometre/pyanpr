@@ -1,14 +1,11 @@
-
 import os
 from flask import Flask, flash, request, json, jsonify, redirect, url_for, send_file, render_template, Response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import redis
-import mysql.connector
 import inotify.adapters
 import logging
 import subprocess
-
 
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
@@ -17,19 +14,11 @@ app = Flask(__name__, static_folder='static', static_url_path='')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
-alprdb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="395F844E696D423F6B7ACBBA301539668E6",
-  port= 3306,
-  database="alprdata"
-)
+
 r = redis.Redis(
     host='localhost',
     port=6379,
 )
-
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -47,7 +36,6 @@ def get_images_alprd():
 
 @app.route("/alprdb", methods=["GET"])
 def list_items():
-    list_alpr= []
     a = r.hgetall("alpr_plate_to_img")
     b = format(a)
     print(type(b))
@@ -58,18 +46,23 @@ def alpr_from_video():
     get_images_alprd()
     request_data = request.get_json()
     alpr_results = request_data["results"]
-    alpr_uuid = request_data["uuid"]
     alpr_plate = alpr_results[0]["plate"]
     alpr_img = get_images_alprd()
     alpr_img_plate = alpr_img[1]
-    alpr_id = (alpr_plate)
     try:
         data = alpr_plate
+        r.hset("alpr_plate_to_img", alpr_plate, alpr_img_plate)
+        r.hset(
+            f"alpr_plate:{alpr_plate}",
+            mapping={
+                "alpr_plate": alpr_plate,
+                "alpr_img": alpr_img_plate,
+            },
+        )
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
         return jsonify(status="fail", message="not published")
-
 
 @app.route('/alprdsse', methods=["GET"])
 def sse():
@@ -97,7 +90,6 @@ def alprd_images():
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")
 
-
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -120,13 +112,9 @@ def upload_file():
             jl = json.loads(output)
             result = jl["results"]
             result_plate = result[0]["plate"]
-            alprcursor = alprdb.cursor()
-            alprcursor.execute("CREATE DATABASE IF NOT EXISTS alprdata;")
-            alprcursor.execute("CREATE TABLE  IF NOT EXISTS  uploads (id INT KEY AUTO_INCREMENT,  plate TEXT);")
-            sql = "INSERT INTO uploads (plate) VALUES (%s)"
-            val = result_plate,
-            alprcursor.execute(sql,val)
-            alprdb.commit()
+            upload_id = r.incr("alpr_ids")
+            r.hset("upload_plate_to_img", upload_id, result_plate)
+            r.hset(f"upload_plate:{upload_id}",mapping={"alpr_plate": result_plate,},)
             print((output))
             return redirect(url_for('home', name=filename))
     return '''
@@ -142,23 +130,10 @@ def upload_file():
 
 @app.route("/uploaddb", methods=["GET"])
 def alpr_result():
-        cursor = alprdb.cursor()
-        query = "SELECT * FROM uploads"  # Replace with your desired query
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        result = []
-        for row in rows:
-            d = {}
-            for i, col in enumerate(cursor.description):
-                d[col[0]] = row[i]
-            result.append(d)
-        json_result = json.dumps(result)
-        print((json_result))
-        return(json_result)
-
-
-
-
+        res = r.hgetall("upload_plate_to_img")
+        resj = format(res)
+        print((resj))
+        return(resj)
 
 @app.route('/uploadvideo', methods=['GET', 'POST'])
 def upload_alpr_file():
@@ -189,9 +164,6 @@ def display_video(filename):
 	print('display_video filename: ' + filename)
 	return redirect(url_for('static', filename='upload/' + filename), code=301)
 
-
-
-
 @app.route("/video")
 def video():
     return send_file("./static/upload/alprVideo.mp4")
@@ -199,7 +171,6 @@ def video():
 @app.route("/") 
 def home():
     return render_template('index.html')      
-
 
 if __name__ == "__main__":
      app.config['TEMPLATES_AUTO_RELOAD']=True
