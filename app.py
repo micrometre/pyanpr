@@ -39,11 +39,12 @@ def get_images_alprd():
 def check_key():
     key = request.args.get('key')  # Retrieve key from request arguments
     field = request.args.get('field')  # Retrieve field from request arguments
-    exists = r.hexists(key, field)  # Check if the field exists in the hash
-    getredis = r.hget(key, field)  # Check if the field exists in the hash
-    b = format(getredis)
-    print(b)
-    return(b)
+    get_plate = r.hget(key, field)  # Check if the field exists in the hash
+    plate = format(get_plate)
+    get_image = r.hget("alpr_plate_to_img", get_plate)  # Check if the field exists in the hash
+    img = format(get_image)
+    print((img))
+    return(plate + img)
 
 
 
@@ -64,7 +65,7 @@ def alpr_from_video():
     try:
         data = alpr_plate
         r.hset("alpr_plate_to_id", alpr_plate, alpr_plate)
-        r.hset("alpr_plate_id", alpr_plate, alpr_img_plate)
+        r.hset("alpr_plate_to_img", alpr_plate, alpr_img_plate)
         r.hset(
             f"alpr_plate:{alpr_plate}",
             mapping={
