@@ -30,15 +30,9 @@ def get_images_alprd():
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        alpr_images = {"img": "http://172.187.216.226:5000/images/{}\n".format(filename)}
         alpr_images_sse = ("http://127.0.0.1:5000/images/{}".format(filename))
         r.publish("bigboxcode", json.dumps((alpr_images_sse)))
         return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
-
-
-
-
-
 
 @app.route('/check_key', methods=['GET'])
 def check_key():
@@ -49,18 +43,24 @@ def check_key():
     get_image = r.hget("alpr_plate_to_img", get_plate)  # Check if the field exists in the hash
     img = format(get_image)
     print((img))
-    data = plate + img
+    data = plate + '\n\n' + img
     return(data)
-
-
-
-
 
 @app.route("/alprdb", methods=["GET"])
 def list_items():
-    a = r.hget("alpr_plate")
+    a = r.hgetall("alpr_plate")
     b = format(a)
-    return(b)
+    return("test")
+
+@app.route("/uploaddb", methods=["GET"])
+def alpr_result():
+        res = r.hgetall("upload_plate_to_img")
+        resj = format(res)
+        print((resj))
+        return(resj)
+
+
+
     
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
@@ -153,12 +153,6 @@ def upload_file():
 
 
 
-@app.route("/uploaddb", methods=["GET"])
-def alpr_result():
-        res = r.hgetall("upload_plate_to_img")
-        resj = format(res)
-        print((resj))
-        return(resj)
 
 @app.route('/uploadvideo', methods=['GET', 'POST'])
 def upload_alpr_file():

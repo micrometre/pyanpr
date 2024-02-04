@@ -8,39 +8,25 @@
 
 <body>
     <script type="module" src="js/solid.js"></script>
-
-
-    <iframe name="hiddenFrame" class="hide"></iframe>
-
-    <form action="receiver.pl" method="post" target="hiddenFrame">
-      <input name="signed" type="checkbox">
-      <input value="Save" type="submit">
-    </form>
-    <form action="/check_key" method="get" target="hiddenFrame">
-        <label for="key">First name:</label>
-        <input type="text" id="key" name="key"><br><br>
-        <label for="field">Last name:</label>
-        <input type="text" id="field" name="field"><br><br>
-        <input type="submit" value="Submit">
-      </form> 
-
-
-
-
     <div class="container px-4 py-5" id="custom-cards">
 
-
-        
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-            <p id="demo">Fetch a file to change this text.</p>
+            <div class="col">
+                <div class="card card-cover ">
+                    <div class="d-flex flex-column ">
+                        <p id="demo" class="hide">Fetch a file to change this text.</p>
+                        <script>
+                            let file = "http://127.0.0.1:5000/uploaddb"
+                            fetch(file)
+                                .then(x => x.text())
+                                .then(y => document.getElementById("demo").innerHTML = y);
 
-            <script>
-                let file = "http://127.0.0.1:5000/uploaddb"
-                fetch(file)
-                    .then(x => x.text())
-                    .then(y => document.getElementById("demo").innerHTML = y);
-
-            </script>
+                        </script>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow0">
@@ -66,7 +52,7 @@
                             Upload Video File
                         </h2>
                         <div>
-                            <video  controls="controls" preload="preload" width="320" height="240">
+                            <video controls="controls" preload="preload" width="320" height="240">
                                 <source src="http://127.0.0.1:5000/video" type="video/mp4">
                                 </source>
                             </video>
@@ -84,6 +70,16 @@
             </div>
 
         </div>
+        <iframe name="hiddenFrame" class="hide"></iframe>
+
+        <form action="/check_key" method="get" target="hiddenFrame">
+            <label for="key">First name:</label>
+            <input type="text" id="key" name="key"><br><br>
+            <label for="field">Last name:</label>
+            <input type="text" id="field" name="field"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+
     </div>
 
 

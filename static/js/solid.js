@@ -44,7 +44,9 @@ const PlatesImages = () => {
 
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
          <img src=${PlatesImages} class="img-thumbnail" id="alpr-image" alt="...">
+        <a target="_blank" href=${PlatesImages}>
         <div  id="alpr-image-div" >${PlatesImages}</div>
+        </a>
     </div>
 
 
