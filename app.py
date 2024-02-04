@@ -48,9 +48,13 @@ def check_key():
 
 @app.route("/alprdb", methods=["GET"])
 def list_items():
-    a = r.hgetall("alpr_plate")
-    b = format(a)
-    return("test")
+    stored_alpr  = r.hgetall(
+        "alpr_plate_to_img"
+        )
+    print((stored_alpr))
+    for x in stored_alpr:
+        print((x))
+    return("22")
 
 @app.route("/uploaddb", methods=["GET"])
 def alpr_result():

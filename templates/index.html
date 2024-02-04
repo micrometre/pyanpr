@@ -8,22 +8,22 @@
 
 <body>
     <script type="module" src="js/solid.js"></script>
-            <div class="col">
-                <div class="card card-cover ">
-                    <div class="d-flex flex-column ">
-                        <p id="demo" class="hide">Fetch a file to change this text.</p>
-                        <script>
-                            let file = "http://127.0.0.1:5000/uploaddb"
-                            fetch(file)
-                                .then(x => x.text())
-                                .then(y => document.getElementById("demo").innerHTML = y);
+    <div class="col">
+        <div class="card card-cover ">
+            <div class="d-flex flex-column ">
+                <p id="uploaddb" class="hide">alpr_plate from image.</p>
+                <script>
+                    let file = "http://127.0.0.1:5000/uploaddb"
+                    fetch(file)
+                        .then(x => x.text())
+                        .then(y => document.getElementById("uploaddb").innerHTML = y);
 
-                        </script>
-                        <div>
-                        </div>
-                    </div>
+                </script>
+                <div>
                 </div>
             </div>
+        </div>
+    </div>
     <div class="container px-4 py-5" id="custom-cards">
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <div class="col">
@@ -67,20 +67,22 @@
                 </div>
             </div>
         </div>
-        <iframe name="hiddenFrame" class="hide"></iframe>
-
-        <form action="/check_key" method="get" target="hiddenFrame">
-            <label for="key">alpr key:</label>
-            <input type="text" id="key" name="key"  value="alpr_plate_to_id" placeholder="alpr_plate_to_id"><br><br>
-            <label for="field">Last name:</label>
-            <input type="text" id="field" name="field"><br><br>
-            <input type="submit" value="Submit">
-        </form>
 
     </div>
 
 
-
+    <div class="container" id="custom-cards">
+        <iframe name="hiddenFrame" class="hide"></iframe>
+        <form action="/check_key" method="get" target="hiddenFrame" class="form-signin">
+            <div class="form-label-group">
+                <label for="key">alpr key:</label>
+                <input type="text" id="key" name="key" value="alpr_plate_to_id" placeholder="alpr_plate_to_id"><br><br>
+                <label for="field">Licence Plate:</label>
+                <input type="text" id="field" name="field"><br><br>
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
 
 
 </body>
