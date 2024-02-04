@@ -1,8 +1,29 @@
 import { onCleanup, createSignal, createResource } from "https://esm.sh/solid-js@1.8.1";
 import { render } from "https://esm.sh/solid-js@1.8.1/web";
 import html from "https://esm.sh/solid-js@1.8.1/html";
+const Search = () => {
+    const [plates, setPlates] = createSignal([])
+    let file2 = `http://127.0.0.1:5000/check_key?key=alpr_plate_to_id&field=AJ13SYV`
+    let text = document.getElementById("field").value;
+    function getText() {
+        console.log(text)
+    }
 
 
+    return html`
+     <div class="position-relative overflow-hidden p-1 p-md-1 m-md-1 text-center">
+        <form action="/check_key" method="get">
+            <label for="key">key:</label>
+            <input type="text" id="key" name="key"><br><br>
+            <label for="field">field:</label>
+            <input type="text" id="field" name="field"><br><br>
+            <input type="submit" value="Submit"><br><br>
+            <input id="field" name="field" type="text" oninput=${getText}  placeholder="Enter ALPR">
+          </form> 
+    </div>
+    `;
+};
+render(Search, document.body);
 
 const Plates = () => {
     const [plates, setPlates] = createSignal([])
@@ -53,7 +74,3 @@ const PlatesImages = () => {
     `;
 };
 render(PlatesImages, document.body);
-
-
-
-

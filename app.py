@@ -49,7 +49,10 @@ def check_key():
     get_image = r.hget("alpr_plate_to_img", get_plate)  # Check if the field exists in the hash
     img = format(get_image)
     print((img))
-    return(plate + img)
+    data = plate + img
+    return(data)
+
+
 
 
 
