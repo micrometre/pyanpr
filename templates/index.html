@@ -8,9 +8,6 @@
 
 <body>
     <script type="module" src="js/solid.js"></script>
-    <div class="container px-4 py-5" id="custom-cards">
-
-        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <div class="col">
                 <div class="card card-cover ">
                     <div class="d-flex flex-column ">
@@ -27,6 +24,8 @@
                     </div>
                 </div>
             </div>
+    <div class="container px-4 py-5" id="custom-cards">
+        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <div class="col">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow0">
@@ -44,7 +43,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
@@ -68,20 +66,18 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <iframe name="hiddenFrame" class="hide"></iframe>
 
         <form action="/check_key" method="get" target="hiddenFrame">
-            <label for="key">First name:</label>
-            <input type="text" id="key" name="key"><br><br>
+            <label for="key">alpr key:</label>
+            <input type="text" id="key" name="key"  value="alpr_plate_to_id" placeholder="alpr_plate_to_id"><br><br>
             <label for="field">Last name:</label>
             <input type="text" id="field" name="field"><br><br>
             <input type="submit" value="Submit">
         </form>
 
     </div>
-
 
 
 

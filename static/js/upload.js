@@ -8,11 +8,18 @@ function handleFileSelect(evt) {
 
     document.getElementById('list').insertBefore(div, null)
   }
+ 
 }
 
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 
+document.getElementById("files").addEventListener("change", function() {
+  if (this.files.length > 1) { // Limit to 5 files
+    alert("You can only upload a maximum of 5 files.");
+    this.value = ""; // Reset the input
+  }
+});
 
 function update() {
   var element = document.getElementById("videoprogressBar");
