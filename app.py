@@ -143,7 +143,7 @@ def upload_file():
             r.hset("upload_plate_to_img", upload_id, result_plate)
             r.hset(f"upload_plate:{upload_id}",mapping={"alpr_plate": result_plate,},)
             print((output))
-            return redirect(url_for('home', name=filename))
+            return redirect(url_for('home'))
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -171,7 +171,7 @@ def upload_alpr_file():
         if file and allowed_file(file.filename):
             filename = secure_filename('alprVideo.mp4')
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('home', name=filename))
+            return redirect(url_for('home'))
     return '''
     <!doctype html>
     <title>Upload new File</title>
