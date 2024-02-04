@@ -35,6 +35,11 @@ def get_images_alprd():
         r.publish("bigboxcode", json.dumps((alpr_images_sse)))
         return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
 
+
+
+
+
+
 @app.route('/check_key', methods=['GET'])
 def check_key():
     key = request.args.get('key')  # Retrieve key from request arguments
