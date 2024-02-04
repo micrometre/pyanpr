@@ -58,7 +58,7 @@ def check_key():
 
 @app.route("/alprdb", methods=["GET"])
 def list_items():
-    a = r.hgetall("alpr_plate_to_id")
+    a = r.hget("alpr_plate")
     b = format(a)
     return(b)
     
@@ -72,8 +72,6 @@ def alpr_from_video():
     alpr_img_plate = alpr_img[1]
     try:
         data = alpr_plate
-        r.hset("alpr_plate_to_id", alpr_plate, alpr_plate)
-        r.hset("alpr_plate_to_img", alpr_plate, alpr_img_plate)
         r.hset(
             f"alpr_plate:{alpr_plate}",
             mapping={
@@ -82,6 +80,8 @@ def alpr_from_video():
                 "alpr_plate_img": alpr_img_plate,
             },
         )
+        r.hset("alpr_plate_to_id", alpr_plate, alpr_plate)
+        r.hset("alpr_plate_to_img", alpr_plate, alpr_img_plate)
         r.publish("alprd", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
