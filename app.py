@@ -45,9 +45,10 @@ def check_key():
     plate = format(get_plate)
     get_image = r.hget("alpr_plate_to_img", get_plate)  # Check if the field exists in the hash
     img = format(get_image)
-    print((img))
-    data = plate + '\n\n' + img
-    return(data)
+    print((get_image))
+    data = [plate, img]
+    return jsonify(status="success", data=data)
+
 
 @app.route("/alprdb", methods=["GET"])
 def list_items():
