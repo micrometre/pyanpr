@@ -58,8 +58,6 @@ def list_items():
     res_values = []
     for x in stored_alpr:
         res_values.append(x)
-        d = res
-        print(x)
     return(res)
 
 @app.route("/uploaddb", methods=["GET"])
