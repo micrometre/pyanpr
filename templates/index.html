@@ -17,6 +17,13 @@
                     fetch(file)
                         .then(x => x.text())
                         .then(y => document.getElementById("uploaddb").innerHTML = y);
+                    
+                        fetch(file)
+                        .then((response) => {
+                        console.log(response);
+                    });
+
+
 
                 </script>
                 <div>

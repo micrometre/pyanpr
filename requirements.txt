@@ -4,4 +4,4 @@ redis
 mysql.connector
 inotify
 flask-cors
-jupyterlab
+pandas

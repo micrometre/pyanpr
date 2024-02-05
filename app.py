@@ -6,8 +6,10 @@ import redis
 import inotify.adapters
 import logging
 import subprocess
-from datetime import datetime
-import re
+import pandas as pd
+
+
+
 UPLOAD_FOLDER = './static/upload'
 ALLOWED_EXTENSIONS = {'mp4', 'png', 'jpg', 'jpeg', 'gif'}
 logging.getLogger('flask_cors').level = logging.DEBUG
@@ -19,6 +21,7 @@ CORS(app)
 r = redis.Redis(
     host='localhost',
     port=6379,
+    decode_responses=True,
 )
 
 def allowed_file(filename):
@@ -51,16 +54,19 @@ def list_items():
     stored_alpr  = r.hgetall(
         "alpr_plate_to_img"
         )
-    print((stored_alpr))
+    res = format(stored_alpr)    
+    res_values = []
     for x in stored_alpr:
-        print((x))
-    return("22")
+        res_values.append(x)
+        d = res
+        print(x)
+    return(res)
 
 @app.route("/uploaddb", methods=["GET"])
 def alpr_result():
         res = r.hgetall("upload_plate_to_img")
         resj = format(res)
-        print((resj))
+        print(type(res))
         return(resj)
 
 
@@ -99,7 +105,7 @@ def sse():
         for message in pubsub.listen():
             try:
                 data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
+                yield "data: {}\n\n".format(str(data))
             except:
                 pass
     return Response(sse_events(), mimetype="text/event-stream")
@@ -112,7 +118,7 @@ def alprd_images():
         for message in pubsub.listen():
             try:
                 data = message["data"]
-                yield "data: {}\n\n".format(str(data, 'utf-8'))
+                yield "data: {}\n\n".format(str(data))
             except:
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")
