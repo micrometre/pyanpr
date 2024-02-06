@@ -41,7 +41,3 @@ networks:
 volumes:
   redis:
   redis-config:
-
-networks:
-  redis-network:
-    driver: bridge

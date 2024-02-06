@@ -6,7 +6,7 @@ import html from "https://esm.sh/solid-js@1.8.1/html";
 
 const Plates = () => {
     const [plates, setPlates] = createSignal([])
-    var source = new EventSource("http://127.0.0.1:5000/alprdsse");
+    var source = new EventSource("http://35.246.54.118:5000/alprdsse");
     source.onmessage = function (event) {
         const alprdData = JSON.parse(event.data)
         setPlates(alprdData)
@@ -28,7 +28,7 @@ const PlatesImages = () => {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/No_sign.svg/192px-No_sign.svg.png";
     }
 
-    var source = new EventSource("http://127.0.0.1:5000/images");
+    var source = new EventSource("http://35.246.54.118:5000/images");
     source.onmessage = function (event) {
         const alprdData = JSON.parse(event.data)
         setPlatesImages(alprdData)

@@ -13,7 +13,7 @@
             <div class="d-flex flex-column ">
                 <p id="uploaddb" class="hide">alpr_plate from image.</p>
                 <script>
-                    let file = "http://127.0.0.1:5000/uploaddb"
+                    let file = "http://35.246.54.118:5000/uploaddb"
                     fetch(file)
                         .then(x => x.text())
                         .then(y => document.getElementById("uploaddb").innerHTML = y);
@@ -58,7 +58,7 @@
                         </h2>
                         <div>
                             <video controls="controls" preload="preload" width="320" height="240">
-                                <source src="http://127.0.0.1:5000/video" type="video/mp4">
+                                <source src="http://35.246.54.118:5000/video" type="video/mp4">
                                 </source>
                             </video>
                         </div>

@@ -33,9 +33,9 @@ def get_images_alprd():
     i.add_watch('./static/images/')
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
-        alpr_images_sse = ("http://127.0.0.1:5000/images/{}".format(filename))
+        alpr_images_sse = ("http://35.246.54.118:5000/images/{}".format(filename))
         r.publish("bigboxcode", json.dumps((alpr_images_sse)))
-        return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
+        return ("alprd", json.dumps("http://35.246.54.118:5000/images/{}".format(filename)))
 
 @app.route('/check_key', methods=['GET'])
 def check_key():
