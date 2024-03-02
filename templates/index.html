@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+
     {% include 'head-imports.html' %}
 </head>
 
@@ -9,12 +11,11 @@
 <body>
     <script type="module" src="js/solid.js"></script>
     <div class="col">
-                        <div>
-                            <video controls="controls" width="320" height="240">
-                                <source src="http://127.0.0.1:5000/video_feed" >
-                                </source>
-                            </video>
-                        </div>
+        <div>
+            <div style="margin: 0px; height: 100%; background-color: rgb(14, 14, 14);"><img
+                    style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"
+                    src="http://127.0.0.1:5000/video_feed" width="671" height="377"></div>
+        </div>
         <div class="card card-cover ">
             <div class="d-flex flex-column ">
                 <p id="uploaddb" class="hide">alpr_plate from image.</p>
@@ -23,11 +24,11 @@
                     fetch(file)
                         .then(x => x.text())
                         .then(y => document.getElementById("uploaddb").innerHTML = y);
-                    
-                        fetch(file)
+
+                    fetch(file)
                         .then((response) => {
-                        console.log(response);
-                    });
+                            console.log(response);
+                        });
 
 
 
@@ -97,9 +98,10 @@
         </form>
         <output id="list"></output>
     </div>
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
 
 </body>
 {% include 'scripts.html' %}
 
-</html> 
+</html>
