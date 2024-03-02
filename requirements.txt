@@ -5,3 +5,4 @@ mysql.connector
 inotify
 flask-cors
 pandas
+opencv-python

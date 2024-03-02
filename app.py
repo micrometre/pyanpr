@@ -7,6 +7,7 @@ import inotify.adapters
 import logging
 import subprocess
 import pandas as pd
+import cv2
 
 
 
@@ -192,6 +193,28 @@ def upload_alpr_file():
 def display_video(filename):
 	print('display_video filename: ' + filename)
 	return redirect(url_for('static', filename='upload/' + filename), code=301)
+
+
+
+def gen_frames():  # generate frame by frame from camera
+    camera = cv2.VideoCapture('http://127.0.0.1:8082')
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    while True:
+        ret, frame = camera.read()
+        if not ret:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+# Route to stream video frames
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
 
 @app.route("/video")
 def video():

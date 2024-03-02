@@ -1,0 +1,15 @@
+#ExecStart=/home/dell/repos/pyanpr/.venv/bin/python  /home/dell/repos/pyanpr/test.py
+[Unit]
+Description=Docker containers
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash -c "docker compose -f /home/dell/repos/pyanpr/docker-compose.yml up --detach"
+ExecStop=/bin/bash -c "docker compose -f  /home/dell/repos/pyanpr/docker-compose.yml stop"
+ExecReload=/bin/bash -c "docker compose -f  /home/dell/repos/pyanpr/docker-compose.yml down -v"
+
+[Install]
+WantedBy=multi-user.target
