@@ -100,9 +100,6 @@ def alpr_from_camera():
         return jsonify(status="fail", message="not published")
 
 
-
-
-
     
 @app.route('/alprd', methods=["POST"])
 def alpr_from_video():
@@ -142,6 +139,18 @@ def sse():
                 pass
     return Response(sse_events(), mimetype="text/event-stream")
 
+@app.route('/camerasse', methods=["GET"])
+def camera_sse():
+    def camera_sse_events():
+        pubsub = r.pubsub()
+        pubsub.subscribe("alprdcamera")
+        for message in pubsub.listen():
+            try:
+                data = message["data"]
+                yield "data: {}\n\n".format(str(data))
+            except:
+                pass
+    return Response(camera_sse_events(), mimetype="text/event-stream")
 @app.route("/images", methods=["GET"])
 def alprd_images():
     def alpr_sse_events():
