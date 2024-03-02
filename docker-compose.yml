@@ -28,9 +28,9 @@ services:
     depends_on:
       - redis
 
-  alpr:
-    build: ./openalpr-docker
-    container_name: alprd-main
+  alpr_upload:
+    build: ./openalpr-upload
+    container_name: alprd-uplaod
     user: root
     volumes:
       - ./static/images:/var/lib/openalpr/plateimages      

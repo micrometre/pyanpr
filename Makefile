@@ -1,9 +1,11 @@
 .PHONY: run
 claen_alprd: 
+	sudo rm -rf static/tmp/
 	sudo rm -rf static/images/
 	sudo rm -rf static/camera-images/
 	mkdir static/camera-images/
 	mkdir static/images
+	mkdir static/tmp
 flask_start:
 	flask run --host=0.0.0.0 --debug	
 start:

@@ -35,8 +35,12 @@ def get_images_alprd():
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
         alpr_images_sse = ("http://127.0.0.1:5000/images/{}".format(filename))
-        r.publish("bigboxcode", json.dumps((alpr_images_sse)))
+        r.publish("alprdimages", json.dumps((alpr_images_sse)))
         return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
+        
+
+
+
 
 @app.route('/check_key', methods=['GET'])
 def check_key():
@@ -68,9 +72,6 @@ def alpr_result():
         resj = format(res)
         print(type(res))
         return(resj)
-
-
-   
 
 
     
@@ -116,7 +117,7 @@ def sse():
 def alprd_images():
     def alpr_sse_events():
         pubsub = r.pubsub()
-        pubsub.subscribe("bigboxcode")
+        pubsub.subscribe("alprdimages")
         for message in pubsub.listen():
             try:
                 data = message["data"]
@@ -162,11 +163,6 @@ def upload_file():
     </form>
     '''
 
-
-
-
-
-
 @app.route('/uploadvideo', methods=['GET', 'POST'])
 def upload_alpr_file():
     if request.method == 'POST':
@@ -190,17 +186,13 @@ def upload_alpr_file():
       <input type=submit value=Upload>
     </form>
     '''
-
 @app.route('/display/<filename>')
 def display_video(filename):
 	print('display_video filename: ' + filename)
 	return redirect(url_for('static', filename='upload/' + filename), code=301)
 
-
-
 def gen_frames():  # generate frame by frame from camera
     camera = cv2.VideoCapture('http://127.0.0.1:8082')
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
     while True:
         ret, frame = camera.read()
         if not ret:
@@ -211,12 +203,9 @@ def gen_frames():  # generate frame by frame from camera
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
-# Route to stream video frames
 @app.route('/video_feed')
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
 
 @app.route("/video")
 def video():
