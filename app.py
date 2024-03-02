@@ -70,6 +70,8 @@ def alpr_result():
         return(resj)
 
 
+   
+
 
     
 @app.route('/alprd', methods=["POST"])
