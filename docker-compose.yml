@@ -35,6 +35,12 @@ services:
     volumes:
       - ./static/images:/var/lib/openalpr/plateimages      
       
+  alpr_stream:
+    build: ./openalpr-stream
+    container_name: alprd-stream
+    user: root
+    volumes:
+      - ./static/camera-images:/var/lib/openalpr/plateimages      
 networks:
   redis-network:
     driver: bridge      

@@ -36,8 +36,17 @@ def get_images_alprd():
         (_, type_names, path, filename) = event
         alpr_images_sse = ("http://127.0.0.1:5000/images/{}".format(filename))
         r.publish("alprdimages", json.dumps((alpr_images_sse)))
-        return ("alprd", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
+        return ("alprd-upload", json.dumps("http://127.0.0.1:5000/images/{}".format(filename)))
         
+def get_camera_alprd_images():
+    i = inotify.adapters.Inotify()
+    i.add_watch('./static/camera-images/')
+    for event in i.event_gen(yield_nones=False):
+        (_, type_names, path, filename) = event
+        alpr_images_sse = ("http://127.0.0.1:5000/camera-images/{}".format(filename))
+        print(alpr_images_sse)
+        r.publish("alprdcameraimages", json.dumps((alpr_images_sse)))
+        return ("alprd-camera", json.dumps("http://127.0.0.1:5000/camera-images/{}".format(filename)))
 
 
 
@@ -72,6 +81,26 @@ def alpr_result():
         resj = format(res)
         print(type(res))
         return(resj)
+
+
+@app.route('/camera', methods=["POST"])
+def alpr_from_camera():
+    get_camera_alprd_images()
+    request_data = request.get_json()
+    alpr_camera_results = request_data["results"]
+    alpr_camera_plate = alpr_camera_results[0]["plate"]
+    alpr_camera_img = get_camera_alprd_images()
+    alpr_camera_img_plate = alpr_camera_img[1]
+    print(alpr_camera_img_plate)
+    try:
+        data = alpr_camera_plate
+        r.publish("alprdcamera", json.dumps(data))
+        return jsonify(status="success", message="published", data=data)
+    except:
+        return jsonify(status="fail", message="not published")
+
+
+
 
 
     
