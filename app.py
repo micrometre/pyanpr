@@ -164,6 +164,22 @@ def alprd_images():
                 pass
     return Response(alpr_sse_events(), mimetype="text/event-stream")
 
+
+@app.route("/cameraimages", methods=["GET"])
+def alprd_camera_images():
+    def alpr_camera_sse_events():
+        pubsub = r.pubsub()
+        pubsub.subscribe("alprdcameraimages")
+        for message in pubsub.listen():
+            try:
+                data = message["data"]
+                yield "data: {}\n\n".format(str(data))
+            except:
+                pass
+    return Response(alpr_camera_sse_events(), mimetype="text/event-stream")
+
+
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
