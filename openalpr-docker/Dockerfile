@@ -15,10 +15,8 @@ RUN mkdir -p   /var/lib/openalpr/plateimages
 VOLUME /var/lib/openalpr/plateimages
 RUN chown 1000:1000 /var/lib/openalpr/plateimages
 
-
 RUN mkdir -p   /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY alprd.conf /etc/openalpr/alprd.conf
 CMD ["/usr/bin/supervisord"]
 WORKDIR ~/
-EXPOSE 11300 11301
