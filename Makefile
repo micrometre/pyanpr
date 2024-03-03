@@ -25,4 +25,3 @@ restart:
 remove:
 	docker compose down -v
 	docker compose rm -f
-	pip install -r requirements.txt
