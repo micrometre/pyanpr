@@ -9,9 +9,10 @@
 
 
 <body>
-    <script type="module" src="js/solid.js"></script>
-    <div class="col">
 
+    <script type="module" src="js/solid.js"></script>
+
+    <div class="col">
 
         <div class="card card-cover ">
             <div class="d-flex flex-column ">
@@ -95,11 +96,27 @@
         </form>
         <output id="list"></output>
     </div>
-        <section class="jumbotron text-center">
-            <div class="container">
-                    <img src="http://127.0.0.1:5000/video_feed" class="img-fluid">
-            </div>
-          </section>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <img id="ledPic" src="http://192.168.1.120:8080/video" class="img-fluid">
+            <input type="button" id="ledonof" onclick="switchStatus();" value="ledoff">
+    
+            <script>
+                function switchStatus() {
+                    let switchButton = document.getElementById('ledonof');
+                    let img = document.getElementById('ledPic');
+                    if (switchButton.value == "ledon") {
+                        img.src = "http://127.0.0.1:5000/video_feed";
+                        switchButton.value = "ledoff";
+                    } else {
+                        img.src = "http://192.168.1.120:8080/video";
+                        switchButton.value = "ledon";
+                    }
+                }
+    
+            </script>
+        </div>
+    </section>
 
 
 </body>
