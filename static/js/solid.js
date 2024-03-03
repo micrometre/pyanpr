@@ -2,11 +2,9 @@ import { onCleanup, createSignal, createResource } from "https://esm.sh/solid-js
 import { render } from "https://esm.sh/solid-js@1.8.1/web";
 import html from "https://esm.sh/solid-js@1.8.1/html";
 
-
-
-const Plates = () => {
+const cameraPlates = () => {
     const [plates, setPlates] = createSignal([])
-    var source = new EventSource("http://127.0.0.1:5000/alprdsse");
+    var source = new EventSource("http://127.0.0.1:5000/camerasse");
     source.onmessage = function (event) {
         const alprdData = JSON.parse(event.data)
         setPlates(alprdData)
@@ -19,7 +17,9 @@ const Plates = () => {
     </div>
     `;
 };
-render(Plates, document.body);
+render(cameraPlates, document.body);
+
+
 
 const PlatesImages = () => {
     const [PlatesImages, setPlatesImages] = createSignal([])
@@ -49,13 +49,26 @@ const PlatesImages = () => {
         </a>
     </div>
 
-
-
-
     `;
 };
 render(PlatesImages, document.body);
 
 
 
+const Plates = () => {
+    const [plates, setPlates] = createSignal([])
+    var source = new EventSource("http://127.0.0.1:5000/alprdsse");
+    source.onmessage = function (event) {
+        const alprdData = JSON.parse(event.data)
+        setPlates(alprdData)
+    };
+    return html`
+     <div class="position-relative overflow-hidden p-1 p-md-1 m-md-1 text-center">
+        <h2 class="pt-2 mt-2 mb-2 display-4 fw-bold">
+        ${plates}
+       </h2>
+    </div>
+    `;
+};
+render(Plates, document.body);
 
