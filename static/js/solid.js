@@ -17,7 +17,7 @@ const cameraPlates = () => {
     </div>
     `;
 };
-render(cameraPlates, document.body);
+render(cameraPlates, document.getElementById('alprd-plates-camera'));
 
 
 
@@ -51,7 +51,7 @@ const PlatesImages = () => {
 
     `;
 };
-render(PlatesImages, document.body);
+render(PlatesImages, document.getElementById('alprd-images'));
 
 
 
@@ -70,5 +70,6 @@ const Plates = () => {
     </div>
     `;
 };
-render(Plates, document.body);
+//render(Plates, document.body);
+render(Plates, document.getElementById('alprd-plates'));
 

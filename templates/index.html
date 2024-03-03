@@ -10,17 +10,21 @@
 <body>
     <script type="module" src="js/solid.js"></script>
     <div class="col">
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h2>Camera streams</h2>
+                <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
+                    <img id="ledPic" src="http://192.168.1.120:8080/video" class="img-fluid">
+                    <input type="button" id="ledonof" onclick="switchStatus();" value="Camera-1">
+                    </input>
+                    <div id="alprd-plates-camera"></div>
 
-        <div class="card card-cover ">
-            <div class="d-flex flex-column ">
-                <h2>Result from uploaded Image</h2>
-                <p id="uploaddb" class="hide">alpr_plate from image.</p>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="container px-4 py-5" id="custom-cards">
-        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-            <div class="col">
+        </section>
+
+        <section class="jumbotron text-center">
+            <div class="container">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow0">
                         <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
@@ -37,7 +41,26 @@
                     </div>
                 </div>
             </div>
+            <div class="card card-cover ">
+                <div class="d-flex flex-column ">
+                    <h2>Result from uploaded Image</h2>
+                    <p id="uploaddb" class="hide">alpr_plate from image.</p>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <div class="container px-4 py-5" id="custom-cards">
+        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
             <div class="col">
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+
+        <section class="jumbotron text-center">
+            <div class="container">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
                     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                         <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
@@ -60,39 +83,30 @@
                     </div>
                 </div>
             </div>
-        </div>
+            <div id="alprd-images"></div>
+            <div id="alprd-plates"></div>
+        </section>
 
-    </div>
-
-
-    <div class="container" id="custom-cards">
-        <iframe name="hiddenFrame" class="hide"></iframe>
-        <h2>Search upload Video Data</h2>
-        <form action="/check_key" method="get" target="hiddenFrame" class="form-signin">
-            <div class="form-label-group">
-                <label for="key">alpr key:</label>
-                <input type="text" id="key" name="key" value="alpr_plate_to_id" placeholder="alpr_plate_to_id"><br><br>
-                <label for="field">Licence Plate:</label>
-                <input type="text" id="field" name="field"><br><br>
-                <input type="submit" value="Submit">
+        <section class="jumbotron text-center">
+            <div class="container">
+                <div class="container" id="custom-cards">
+                    <iframe name="hiddenFrame" class="hide"></iframe>
+                    <h2>Search upload Video Data</h2>
+                    <form action="/check_key" method="get" target="hiddenFrame" class="form-signin">
+                        <div class="form-label-group">
+                            <label for="key">alpr key:</label>
+                            <input type="text" id="key" name="key" value="alpr_plate_to_id"
+                                placeholder="alpr_plate_to_id"><br><br>
+                            <label for="field">Licence Plate:</label>
+                            <input type="text" id="field" name="field"><br><br>
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                    <output id="list"></output>
+                </div>
             </div>
-        </form>
-        <output id="list"></output>
+        </section>
     </div>
-    <section class="jumbotron text-center">
-        <div class="container">
-            <h2>Camera streams</h2>
-            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
-                <img id="ledPic" src="http://192.168.1.120:8080/video" class="img-fluid">
-                <input type="button" id="ledonof" onclick="switchStatus();" value="camera-1">
-                </input>
-
-                <script>
-
-                </script>
-            </div>
-        </div>
-    </section>
 
 
 </body>
