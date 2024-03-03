@@ -1,10 +1,13 @@
 #ExecStart=/home/dell/repos/pyanpr/.venv/bin/python  /home/dell/repos/pyanpr/test.py
 [Unit]
 Description=Alpr Flask
-After=systend-user-sessions.service
+After=systemd-user-sessions.service
 
 [Service]
 Type=simple
-#ExecStart=/home/dell/repos/pyanpr/monit.sh
-#ExecStart=/usr/bin/python3  /home/dell/repos/pyanpr/test.py
-ExecStart=/home/dell/.local/bin/flask run --host=0.0.0.0 --debug
+WorkingDirectory=/home/dell/repos/pyanpr
+ExecStart=/usr/bin/python3  /home/dell/repos/pyanpr/app.py 
+Restart=always
+
+
+
