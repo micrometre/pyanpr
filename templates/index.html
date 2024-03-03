@@ -7,32 +7,14 @@
     {% include 'head-imports.html' %}
 </head>
 
-
 <body>
-
     <script type="module" src="js/solid.js"></script>
-
     <div class="col">
 
         <div class="card card-cover ">
             <div class="d-flex flex-column ">
+                <h2>Result from uploaded Image</h2>
                 <p id="uploaddb" class="hide">alpr_plate from image.</p>
-                <script>
-                    let file = "http://127.0.0.1:5000/uploaddb"
-                    fetch(file)
-                        .then(x => x.text())
-                        .then(y => document.getElementById("uploaddb").innerHTML = y);
-
-                    fetch(file)
-                        .then((response) => {
-                            console.log(response);
-                        });
-
-
-
-                </script>
-                <div>
-                </div>
             </div>
         </div>
     </div>
@@ -85,6 +67,7 @@
 
     <div class="container" id="custom-cards">
         <iframe name="hiddenFrame" class="hide"></iframe>
+        <h2>Search upload Video Data</h2>
         <form action="/check_key" method="get" target="hiddenFrame" class="form-signin">
             <div class="form-label-group">
                 <label for="key">alpr key:</label>
@@ -98,23 +81,16 @@
     </div>
     <section class="jumbotron text-center">
         <div class="container">
-            <img id="ledPic" src="http://192.168.1.120:8080/video" class="img-fluid">
-            <input type="button" id="ledonof" onclick="switchStatus();" value="ledoff">
-    
-            <script>
-                function switchStatus() {
-                    let switchButton = document.getElementById('ledonof');
-                    let img = document.getElementById('ledPic');
-                    if (switchButton.value == "ledon") {
-                        img.src = "http://127.0.0.1:5000/video_feed";
-                        switchButton.value = "ledoff";
-                    } else {
-                        img.src = "http://192.168.1.120:8080/video";
-                        switchButton.value = "ledon";
-                    }
-                }
-    
-            </script>
+            <h2>Camera streams</h2>
+            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
+                <img id="ledPic" src="http://192.168.1.120:8080/video" class="img-fluid">
+                <input type="button" id="ledonof" onclick="switchStatus();" value="camera-1">
+                </input>
+
+                <script>
+
+                </script>
+            </div>
         </div>
     </section>
 

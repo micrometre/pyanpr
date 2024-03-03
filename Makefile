@@ -25,3 +25,6 @@ restart:
 remove:
 	docker compose down -v
 	docker compose rm -f
+
+start_camera:
+	 vlc -vvv v4l2:///dev/video0 --sout '#transcode{vcodec=mp4v,acodec=none}:duplicate{dst=http{mux=ts,dst=:8082/},dst=display}' 
