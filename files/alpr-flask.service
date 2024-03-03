@@ -6,4 +6,5 @@ After=systend-user-sessions.service
 [Service]
 Type=simple
 #ExecStart=/home/dell/repos/pyanpr/monit.sh
-ExecStart=/usr/bin/python3  /home/dell/repos/pyanpr/test.py
+#ExecStart=/usr/bin/python3  /home/dell/repos/pyanpr/test.py
+ExecStart=/home/dell/.local/bin/flask run --host=0.0.0.0 --debug
