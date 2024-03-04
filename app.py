@@ -94,6 +94,16 @@ def alpr_from_camera():
     print(alpr_camera_img_plate)
     try:
         data = alpr_camera_plate
+        r.hset(
+            f"alpr_camera_plate:{alpr_camera_plate}",
+            mapping={
+                "alpr_camera_plate_id": alpr_camera_plate,
+                "alpr_camera_plate": alpr_camera_plate,
+                "alpr_camera_plate_img": alpr_camera_img_plate,
+            },
+        )
+        r.hset("alpr_camera_plate_to_id", alpr_camera_plate, alpr_camera_plate)
+        r.hset("alpr_camera_plate_to_img", alpr_camera_plate, alpr_camera_img_plate)
         r.publish("alprdcamera", json.dumps(data))
         return jsonify(status="success", message="published", data=data)
     except:
