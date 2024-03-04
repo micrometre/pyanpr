@@ -25,16 +25,25 @@ actions:
   shell: /usr/bin/python3  /home/dell/repos/pyanpr/scripts/flushdb.py
   popupOnStart: execution-dialog
 
-- title: start OpenALPR 
+- title: start Uploaded Video OpenALPR 
   icon: restart
   shell: sudo systemctl start alpr-openalpr.service 
   popupOnStart: execution-dialog
 
-- title: stop OpenALPR 
+- title: stop Uploaded Video OpenALPR
   icon: '&#129302;'
   shell: sudo systemctl stop alpr-openalpr.service 
   popupOnStart: execution-dialog
 
+- title: start Camera Streams OpenALPR 
+  icon: restart
+  shell: sudo systemctl start alpr-openalpr-camera.service
+  popupOnStart: execution-dialog
+
+- title: stop Camera Streams OpenALPR
+  icon: '&#129302;'
+  shell: sudo systemctl stop alpr-openalpr-camera.service
+  popupOnStart: execution-dialog
 - title: start flask application
   icon: restart
   shell: sudo systemctl start alpr-flask.service

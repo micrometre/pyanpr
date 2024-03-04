@@ -1,6 +1,6 @@
 #ExecStart=/home/dell/repos/pyanpr/.venv/bin/python  /home/dell/repos/pyanpr/test.py
 [Unit]
-Description=Docker containers
+Description=Alprd and Redis Docker containers
 After=docker.service
 Requires=docker.service
 

@@ -6,8 +6,9 @@ Requires=docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/bash -c "docker compose -f /home/dell/repos/pyanpr/openalpr-upload/docker-compose.yml up --detach"
+ExecStart=/bin/bash -c "docker compose -f /home/dell/repos/pyanpr/openalpr-upload/docker-compose.yml up --detach --build"
 ExecStop=/bin/bash -c "docker compose -f  /home/dell/repos/pyanpr/openalpr-upload/docker-compose.yml stop"
 ExecReload=/bin/bash -c "docker compose -f  /home/dell/repos/pyanpr/openalpr-upload/docker-compose.yml down -v"
 [Install]
 WantedBy=multi-user.target
+
