@@ -1,0 +1,43 @@
+listenAddressSingleHTTPFrontend: 0.0.0.0:1337
+logLevel: "INFO"
+actions:
+
+
+- title: start redis data base
+  icon: restart
+  shell: sudo systemctl start alpr-redis.service
+  popupOnStart: execution-dialog
+    
+- title: stop redis data base
+  icon: light
+  shell: sudo systemctl stop alpr-redis.service
+  popupOnStart: execution-dialog
+
+- title: start OpenALPR 
+  icon: restart
+  shell: sudo systemctl start alpr-openalpr.service 
+  popupOnStart: execution-dialog
+
+- title: stop OpenALPR 
+  icon: light
+  shell: sudo systemctl stop alpr-openalpr.service 
+  popupOnStart: execution-dialog
+
+- title: start flask application
+  icon: restart
+  shell: sudo systemctl start alpr-flask.service
+  popupOnStart: execution-dialog
+
+- title: stop flask application 
+  icon: light
+  shell: sudo systemctl stop alpr-flask.service
+  popupOnStart: execution-dialog
+
+- title: Run backup script
+  shell: /home/dell/repos/pyanpr/scripts/mng.sh
+  shellAfterCompleted: "apprise -t 'Notn:  completed' -b 'completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
+  maxConcurrent: 1
+  timeout: 10
+  icon: backup
+  popupOnStart: execution-dialog
+
