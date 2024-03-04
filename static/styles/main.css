@@ -16,8 +16,10 @@
   height: 20px;
   background-color: #4CAF50;
 }
-video {
-  width: 100%;
-  height: auto;
-}
 
+
+#ledPic{
+  height: 350px;
+  width: 100%;
+  background-color: powderblue;
+}

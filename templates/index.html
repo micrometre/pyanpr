@@ -14,11 +14,13 @@
             <div class="container">
                 <h2>Camera streams</h2>
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
-                    <img id="ledPic" src="http://192.168.1.120:8080/video" class="img-fluid">
-                    <input type="button" id="ledonof" onclick="switchStatus();" value="Camera-1">
-                    </input>
-                    <div id="alprd-plates-camera"></div>
-
+                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                        <img id="ledPic" src="http://192.168.1.120:8080/video" class="img-fluid">
+                        <input type="button" id="ledonof" onclick="switchStatus();" value="Camera-1">
+                        </input>
+                        <div id="alprd-plates-camera"></div>
+                        <div id="alprd-images-camera"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -51,14 +53,6 @@
         </section>
     </div>
     <div class="container px-4 py-5" id="custom-cards">
-        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-            <div class="col">
-            </div>
-            <div class="col">
-            </div>
-        </div>
-
-
         <section class="jumbotron text-center">
             <div class="container">
                 <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg">
