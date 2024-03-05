@@ -1,18 +1,21 @@
 listenAddressSingleHTTPFrontend: 0.0.0.0:1337
 logLevel: "INFO"
+pageTitle: ALPR Serveces Control Center
+showFooter: false
+
 actions:
 - title: start redis data base
   icon: restart
   shell: sudo systemctl start alpr-redis.service
   popupOnStart: execution-dialog
+ 
     
 - title: stop redis data base
   icon: '&#129302;'
   shell: sudo systemctl stop alpr-redis.service
   popupOnStart: execution-dialog
 
-
-- title: Run data base to csv script
+- title: Backup Uploaded video data to CSV 
   shell: /home/dell/repos/pyanpr/scripts/exportdb.sh
   shellAfterCompleted: "apprise -t 'Notn:  completed' -b 'completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
   maxConcurrent: 1
@@ -20,27 +23,22 @@ actions:
   icon: backup
   popupOnStart: execution-dialog
 
-- title: flush redis data base
-  icon: ashtonished
-  shell: /usr/bin/python3  /home/dell/repos/pyanpr/scripts/flushdb.py
-  popupOnStart: execution-dialog
-
-- title: start Uploaded Video OpenALPR 
+- title: start ALPR for Uploaded Video 
   icon: restart
   shell: sudo systemctl start alpr-openalpr.service 
   popupOnStart: execution-dialog
 
-- title: stop Uploaded Video OpenALPR
+- title: stop ALPR for Uploaded Video 
   icon: '&#129302;'
   shell: sudo systemctl stop alpr-openalpr.service 
   popupOnStart: execution-dialog
 
-- title: start Camera Streams OpenALPR 
+- title: start ALPR for Camera Streams  
   icon: restart
   shell: sudo systemctl start alpr-openalpr-camera.service
   popupOnStart: execution-dialog
 
-- title: stop Camera Streams OpenALPR
+- title: stop ALPR for Camera Streams 
   icon: '&#129302;'
   shell: sudo systemctl stop alpr-openalpr-camera.service
   popupOnStart: execution-dialog
@@ -54,20 +52,22 @@ actions:
   shell: sudo systemctl stop alpr-flask.service
   popupOnStart: execution-dialog
 
-- title: start webcam stream
-  icon: disk
-  shell: /home/dell/repos/pyanpr/scripts/start-camera.sh
-  shellAfterCompleted: "apprise -t 'Notn:  completed' -b 'completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
-  maxConcurrent: 1
-  timeout: 10
-  popupOnStart: execution-dialog
+- title: flush redis Uploaded data base
+  icon: ashtonished
+  shell: /usr/bin/python3  /home/dell/repos/pyanpr/scripts/flushdb.py
+  arguments:
+    - type: confirmation
+      title: Are you sure?!
 
-
-- title: Run service management script
+- title: Delete/clear  seasion files
   shell: /home/dell/repos/pyanpr/scripts/mng.sh
   shellAfterCompleted: "apprise -t 'Notn:  completed' -b 'completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
   maxConcurrent: 1
   timeout: 10
-  icon: backup
-  popupOnStart: execution-dialog
+  icon: ashtonished
+  arguments:
+    - type: confirmation
+      title: Are you sure?!
+
+    
 
