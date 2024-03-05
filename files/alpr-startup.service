@@ -1,7 +1,0 @@
-[Unit]
-Description=Alpr StartUp Service
-After=systemd-user-sessions.service
-
-[Service]
-Type=simple
-ExecStart=/home/dell/repos/pyanpr/scripts/systemd-dep.sh
