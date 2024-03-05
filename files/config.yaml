@@ -55,8 +55,11 @@ actions:
   popupOnStart: execution-dialog
 
 - title: start webcam stream
-  icon: '&#129302;'
-  shell: vlc -vvv v4l2:///dev/video0 --sout '#transcode{vcodec=mp4v,acodec=none}:duplicate{dst=http{mux=ts,dst=:8082/},dst=display}' 
+  icon: disk
+  shell: /home/dell/repos/pyanpr/scripts/start-camera.sh
+  shellAfterCompleted: "apprise -t 'Notn:  completed' -b 'completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
+  maxConcurrent: 1
+  timeout: 10
   popupOnStart: execution-dialog
 
 
@@ -65,6 +68,6 @@ actions:
   shellAfterCompleted: "apprise -t 'Notn:  completed' -b 'completed with code {{ exitCode}}. The log is: \n {{ stdout }} '"
   maxConcurrent: 1
   timeout: 10
-  icon: disk
+  icon: backup
   popupOnStart: execution-dialog
 
