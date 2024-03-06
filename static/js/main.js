@@ -6,7 +6,7 @@ function switchStatus() {
         img.src = "http://127.0.0.1:5000/video_feed";
         switchButton.value = "camera-1";
     } else {
-        img.src = "http://192.168.1.120:8080/video";
+        img.src = "http://192.168.1.127:8080/video";
         switchButton.value = "Camera-2";
     }
 }
