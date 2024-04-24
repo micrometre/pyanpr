@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
+#echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list
 apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install -y \
 build-essential \
 cmake \
