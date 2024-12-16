@@ -39,7 +39,7 @@
 - The Flask application acts as an API endpoint to receive the recognized license plates from OpenALPR.
 It stores the license plate information in a Redis database.
 4. Redis Database:
-Redis is used to store the recognized license plates and act as a message broker for real-time updates.
+- Redis is used to store the recognized license plates and act as a message broker for real-time updates.
 5. Server-Sent Events (SSE):
 - SSE is used to push real-time updates from the server to the client-side applications.
 Clients can subscribe to the SSE endpoint to receive notifications whenever a new license plate is detected.
