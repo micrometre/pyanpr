@@ -1,5 +1,4 @@
-# Image Gallery (image-gallery)
-opena alpr licence plate recognition Application built with Python-Flask v.0.12 
+# Opena alpr licence plate recognition Application built with Python-Flask 
 
 
 ---
